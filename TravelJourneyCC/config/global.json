@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "TravelJourney": {
+            "applicationId": "7wO9zjz5xMgigdjzUShTe9KFpGJfsRS9zUyeVD2I", 
+            "masterKey": "zmxEsgaxginBkLjA0Jm2UDYJjaVVCKWcPcxlBQPc"
+        }, 
+        "_default": {
+            "link": "TravelJourney"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.4"
+    }
+}
