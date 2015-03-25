@@ -1,25 +1,19 @@
 // Init Parse with keys
 	Parse.initialize("7wO9zjz5xMgigdjzUShTe9KFpGJfsRS9zUyeVD2I", "t7YR5eMgZGJSdsDy3InZeggIwGI0xOY6uCxB44zK");
-	
-	
-// Make a list <ul> of <a> list of trips ok
-// Give each link a data-attribute to asscoiate with a trip id. 
-// Then set up links so they call on getEntry(tripId) and pass the id from data-attribute
 
-
-
-
-
-// Print the list of Existing Trips into the Trip Page
+    ///////
+	//SHOW EXISTING TRIPS
+    ///////
 function getTrip() {
 	var Trip = Parse.Object.extend("Trip");
 	var query = new Parse.Query(Trip);
 	query.find({
 		success: function(results) {
 			for (var i in results) {
+                console.log("the results[i] is: " + results[i]);
 				$("#existing_trips").append("<li class='trip_li' id="+results[i].id+">"+results[i].get("name")+"</li>");
 			}
-			getEntry(results[i]);
+			//I'm calling getEntry here and works, but shouldn't be here! getEntry(results[i]);
 		}, error: function(error){
 			console.log("error trying to retrieve the existing trip list");
 		}
@@ -28,20 +22,24 @@ function getTrip() {
 
 getTrip();
 
-
-// Trip experiment Entries
-function getEntry(tripId) {
-	console.log("getting entries for trip id:", tripId);
+    ///////
+	//X//SHOW ENTRIES ONCE CLICKED ON TRIP
+    ///////
+function getEntry(tripId) { 
+	console.log("getting entries for trip id:" + tripId);
 	var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
-	query.equalTo("trip", tripId);
+    
+    var Trip = Parse.Object.extend("Trip");
+	var trip = new Trip({id:tripId});
+    
+	query.equalTo("trip", trip);
+    
 	query.find({
 		success: function(results) {
 			for (var i in results) {
-				console.log("getentry is work");
-				var tripa = ".a"+results[i].get("trip").id;
-				console.log(tripa);
-				$(tripa).append("<li class='place'>"+results[i].get("place")+"</li>");	
+				$("#existing_entries").append("<li class='entry_li' id="+results[i].id+">"+results[i].get("place")+"</li>");
+                console.log(results[i].get("place"));
 			
 			}
 			console.log("***************");
@@ -49,24 +47,82 @@ function getEntry(tripId) {
 			console.log("error trying to retrieve the existing entry list");
 		}
 	})
-}
-	
+}	
+
+    ///////
+	//SHOW DETAILS ONCE CLICKED ON ENTRY
+    ///////
+
+function getDetails(entryId) { // tripId: String
+    var Entry = Parse.Object.extend("Entry");
+	var query = new Parse.Query(Entry);
+    
+    var thisentry = new Entry({id:entryId});
+    
+    query.equalTo("entry", thisentry);
+    
+    query.find({
+		success: function(results) {
+			for (var i in results) {
+                console.log("retrieving details for entry id" + results[i].id);
+				$("#entry_things").append("<li class='things'>"+results[i].get("place")+"</li>");
+                $("#entry_things").append("<li class='things'>"+results[i].get("image")+"</li>");
+                $("#entry_things").append("<li class='things'>"+results[i].get("text")+"</li>");
+                $("#entry_things").append("<li class='things'>"+results[i].get("tag")+"</li>");
+			
+			}
+			console.log("***************");
+		}, error: function(error){
+			console.log("error trying to retrieve the details of current entry");
+		}
+	})
+}	
+
+
+
+var currentTrip = "no trip selected";
 
 $(function(){
 	
-	//pre-determine how non-existant elements will work;
-	$("#existing_trips").on("click", ".trip_li", function(name,id) {
+	///////
+	//CLICK ON EXISTING TRIP
+    ///////
+	$("#existing_trips").on("click", ".trip_li", function() {
 		console.log("Trip li in existing trip clicked");
 		$("#trip_area").css("display","none");
 		$("#entry_area").css("display","visible");
+        var name = $(this).text();
+        console.log("name is" + name);
 		$("#entry_trip_name").text(name);
-		//add a class to existing entry ul to populate with entries
+        //is this correct??
+        var id = $(this).attr('id');
+        
+        console.log("id is" + id);
 		$("#existing_entries").addClass("a"+id);
+        //here I need to call the fuction to populate the trip with the entries, but not working
+        
+        currentTrip = id;
+        getEntry(id);
+	});
+    
+    ///////
+	//CLICK ON EXISTING ENTRY
+    ///////
+    $("#existing_entries").on("click", ".entry_li", function() {
+		console.log("Trip li in existing trip clicked");
+		$("#entry_area").css("display","none");
+		$("#details_area").css("display","visible");
+        var name = $(this).text();
+        console.log("name is" + name);
+		$("#entry_entry_name").text(name);
+        var id = $(this).attr('id');
+        console.log("entry id is" + id);
+        getDetails(id);
 	});
 	
 	
 	//LOGIN AND SIGN UP
-	//
+	/////////////
     //LOGIN ACTIVATES
     $("#login").submit(function(event){
 			var name = $("#login-name").val();
@@ -74,7 +130,9 @@ $(function(){
 			login(name, pass);
 			showPages();
 		});
+    ////////
 	//SIGNUP ACTIVATES	
+    ///////
 		$("#signup").submit(function(event) {
 			console.log("Sign in submit");
 			var name = $("#signup-name").val();
@@ -88,7 +146,9 @@ $(function(){
 		$("#login_area").css("display","none");
 		$("#trip_area").css("display","visible");
 	}
+    ////////
 	//SIGN UP FUNCTION
+    ///////
 	 function signup(username, email, password) {
 		console.log("Sign up new User", username, email, password);
 		var user = new Parse.User();
@@ -106,7 +166,9 @@ $(function(){
 		});
 		
 	}
+    ///////
 	//LOGIN FUNCTION
+    ///////
 	function login(username, password) {
 		Parse.User.logIn(username, password, {
 			success: function(user){
@@ -124,7 +186,7 @@ $(function(){
 			var trip_name = $("#trip-name").val();
 			var trip_description = $("#trip-description").val();
 			addTrip(trip_name, trip_description);
-			showPages2();
+			showPages2(trip_name);
 			console.log("Got data for new trip", trip_name, trip_description);
 		});
 	////////////
@@ -148,29 +210,16 @@ $(function(){
 		});
 	}
 	////
-	function showPages2(){
+	function showPages2(trip_name){
 		event.preventDefault();
 		$("#trip_area").css("display","none");
 		$("#entry_area").css("display","visible");
+        $("#entry_trip_name").text(trip_name);
 	}
 	//////////////////
 	//CREATE ENTRY
 	/////
-	/*
-	<div id="entry_area">
-		<div id="entry_container">
-			<h1>Create a new Entry</h1>
-			<form id="entry">
-			  <p>text<br><input id="entry-text" type="text"></p>
-			  <p>image<br><input id="entry-image" type="text"></p>
-			  <p>place<br><input id="entry-place" type="text"></p>
-			  <p>tag<br><input id="entry-tag" type="text"></p>
-			  <p><input type="submit"></p>
-			</form>
-		</div>
-	</div>
 	
-	*/
 	$("#entry").submit(function(event){
 			var entry_text = $("#entry-text").val();
 			var entry_image = $("#entry-image").val();
@@ -209,108 +258,90 @@ $(function(){
 		$("#done_area").css("display","visible");
 	}
 	
+    // Initialize page stuff
+    
+    if (Parse.User.current()) {
+        // user logged in 
+        // show add entry screen
+        $("#login_area").hide();
+    } else {
+        // show log in screen
+    }
+    
+    ////////
+    //ANIMATE THE COMPOSE BUTTON
+    //////////
+    var step=Math.PI/4;
+    var offset= -3 * Math.PI/8;
+    
+    $(".btn_selectbig").hover(function(){
+        $(".btn_select").each(function(i){
+            var x=(Math.sin(step*i+offset)*90)+70;
+            var y=(Math.cos(step*i+offset)*90)+30;
+            $(this).animate({left:x+"px",bottom:y+"px"},200);
+    	});
+    });
+    
+    $(".btn_select").click(function(){
+        $(".btn_select").animate({left:"70px",bottom:"30px"},200);
+    });
+    
+    $(".btn_selectbig").click(function(){
+        $(".btn_select").animate({left:"70px",bottom:"30px"},200);
+    });
+    
 });
 
+//function to open/close the dropdown area of new trip/entry
 
+$(".trip_lialt span").on('click', function(){
+    $("#newtrip").toggle();
+})
 
-/*testing adding photo with parse
-function photoParse() {
-		// Get the file to upload
-		var fileUploadElement = $("#input-file")[0];
-		var filepath = $("#input-file").val();
-		var filename = filepath.split('\\').pop()
-				
-		// Upload the file 
-		if (fileUploadElement.files.length > 0) {
-			// If there's a file upload it then add a post
-			var file = fileUploadElement.files[0];
-			var parseFile = new Parse.File(filename, file);
-			
-			parseFile.save().then(function() {
-				console.log("ParseFile Success");
-				saveComment(parseFile);
-			}, function(error) {
-				console.log("ParseFile Error:"+error.message);
-			});
-		} else {
-			// Else if no file just upload a post
-			saveComment(false);
-		}
-}
+$(".entry_lialt span").on('click', function(){
+    $("#entry_area").css("display","none");
+    $("#compose_area").css("display","visible");
+})
 
-function saveComment(file) {
-		// Make a new Comment object - will generate a record in the Comment table
-		var Comment = Parse.Object.extend("Comment");
-		var comment = new Comment();
-		// Set the current user as author of this comment
-		comment.set("author", Parse.User.current());
-		
-		// check file 
-		if (file) {
-			comment.set("image", file);
-		}
-		
-		// Save the new comment
-		comment.save(null, {
-			success: function(comment) {
-				// If successful post a message 
-				console.log("New Comment added:"+comment.id);
-				updateComments(); // Update the comment list
-			}, 	
-			error: function(comment, error) {
-				// Post a message if there's an error 
-				console.log("Comment failed:"+error.message);
-			}
-		});
+function addText(){
+    console.log("addText triggered");
+    $("#scrap_area").append("<div class='textArea'> hello world!</div>");
 }
 
 
-function updateComments() {
-		// Get user 
-		var user = Parse.User.current();
-		
-		// Make a new Comment Object - This represents the Comment table
-		var Comment = Parse.Object.extend("Comment");
-		
-		// Query the comment table
-		var query = new Parse.Query(Comment);
-		query.include("author");
-		
-		// Order by date, most recent first
-		query.descending("createdAt");
-		
-		// Run the Query find all
-		query.find({
-			success: function(results) {
-				console.log("Comment Query success:"+results.length);
-				var newList = "";
-				// Loop through all of the results
-				for (var i = 0; i < results.length; i++) {
-					// get each object from results, get the comment field 
-					var obj = results[i];
-					var id = obj.id;
-					var date = obj.get("createdAt");
-					var author = obj.get("author");
-					var username = author.get("username"); // attributes.username;
-					var image = obj.get("image");
-					var thumbnail = obj.get("thumbnail");
-					
-					var thumbImg = "";
-					if (thumbnail != undefined) {
-						thumbImg = "<p><a href='"+image.url()+"'><img src='"+thumbnail.url()+"'></a></p>";
-					} else {
-						thumbImg = "";
-					}
-					
-					newList += "<li data-id='"+id+"'>"+
-					comment+"<p>"+username+"</p>"+thumbImg+"</li>";
-					
-				}
-				$("#scrap_area").html(newList);
-			}
-		});
-	}
-	
-	// Load comments on load
-	updateComments();
-*/
+/*Code working without the back-end*/
+
+function addPhoto(){
+    console.log("addPhoto triggered");
+    $("#scrap_area").append("<div id='image'><p id='photo_confirm'>click here to confirm<p></div>");
+    var fileInput = document.getElementById('inputFile');
+    var image = document.getElementById('image');
+
+    document.getElementById('image').addEventListener('click', function(){
+		$("#photo_confirm").css("display", "none");
+        var fileUrl = window.URL.createObjectURL(fileInput.files[0]);
+
+        $('#image').css('background-image','url('+ fileUrl +')');
+		$('#image').draggable();
+    });
+
+};
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+    console.log("I'm getting the location");
+}
+
+function showPosition(position) {
+    
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+    +latlon+"&zoom=14&size=400x300&sensor=false";
+    $("#scrap_area").append("<div id='mapholder'></div>");
+    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+    console.log("I'm getting the map");
+}

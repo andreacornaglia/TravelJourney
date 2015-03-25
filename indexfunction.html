@@ -38,35 +38,71 @@
 		<div id="trip_container">
 			<h1>Existing Trips</h1>
 			<ul id="existing_trips">
+                <li class="trip_lialt">
+                    <span>Add a new Trip</span>
+                    <div id="newtrip">
+                        <form id="trip">
+                          <p>name<br><input id="trip-name" type="text"></p>
+                          <p>description<br><input id="trip-description" type="text"></p>
+                          <p><input type="submit"></p>
+                        </form>
+                    </div>
+                </li>
 			</ul>
-			<h1>Create a new Trip</h1>
-			<form id="trip">
-			  <p>name<br><input id="trip-name" type="text"></p>
-			  <p>description<br><input id="trip-description" type="text"></p>
-			  <p><input type="submit"></p>
-			</form>
+			
 		</div>
 	</div>
 	<div id="entry_area">
 		<div id="entry_container">
 			<h1 id="entry_trip_name"></h1>
-				<ul id="existing_entries">
-				</ul>
-			<h1>Create a new Entry</h1>
-			<form id="entry">
-			  <p>text<br><input id="entry-text" type="text"></p>
-			  <p>image<br><input id="entry-image" type="text"></p>
-			  <p>place<br><input id="entry-place" type="text"></p>
-			  <p>tag<br><input id="entry-tag" type="text"></p>
-			  <p><input type="submit"></p>
-			</form>
+            <ul id="existing_entries">
+                    <li class="entry_lialt">
+                        <span>Create a new Entry</span>
+                 <!--       <div id="newentry">
+                        <form id="entry">
+                          <p>text<br><input id="entry-text" type="text"></p>
+                          <p><input type="file" id="entry-image"></p>
+                          <p>place<br><input id="entry-place" type="text"></p>
+                          <p>tag<br><input id="entry-tag" type="text"></p>
+                          <p><input type="submit"></p>
+                        </form>
+                        </div> -->
+                    </li>
+            </ul>
+			
 		</div>
 	</div>
-	<div id="done_area">
-		<div id="done_container">
-			<h1>Congratulations, you now have a new entry in your new trip!</h1>
-		</div>
-	</div>
+      <div id="details_area">
+          <div id="details_container">
+            <h1 id="entry_entry_name"></h1>
+            <ul id="entry_things"></ul>
+          </div>
+      </div>
+    <div id="compose_area">
+        <div id="scrap_area">
+            &nbsp;
+        </div>
+        <div id="footer">
+            <div id="box">
+                <div class="btn_select" id="add_photos" onClick="addPhoto()">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                    <input id="entry-image" type="file">
+                </div>
+                <div class="btn_select" id="entry-text" onClick="addText()">
+                    <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+                </div>
+                <div class="btn_select" id="entry-tag">
+                    <span class="glyphicon glyphicon-tag" aria-hidden="true">
+                </div>
+                <div class="btn_select" id="entry-place" onclick="getLocation()">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                </div>
+                <div class="btn_selectbig" id="add_media">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery/jquery-ui.min.js"></script>
