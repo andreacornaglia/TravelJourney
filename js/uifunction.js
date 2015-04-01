@@ -7,6 +7,7 @@
 function getTrip() {
 	var Trip = Parse.Object.extend("Trip");
 	var query = new Parse.Query(Trip);
+    query.descending("createdAt");
 	query.find({
 		success: function(results) {
 			for (var i in results) {
@@ -29,7 +30,7 @@ function getEntry(tripId) {
 	console.log("getting entries for trip id:" + tripId);
 	var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
-    
+    query.descending("createdAt");
     var Trip = Parse.Object.extend("Trip");
 	var trip = new Trip({id:tripId});
     
@@ -54,15 +55,24 @@ function getEntry(tripId) {
     ///////
 
 function getDetails(entryId) { // tripId: String
+    console.log("Searching for entry:"+entryId);
+    
     var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
     
-    var thisentry = new Entry({id:entryId});
-    
-    query.equalTo("entry", thisentry);
+    // object to save in field var trip = new Trip({id:"idfortrip"})
+    // object parent var entry = new Entry()
+    // entry.set("trip", trip)
+    // NOT THIS entry.set("trip", "tripid")
+  
+    query.equalTo("objectId", entryId);
+    query.include("trip");
+    // query.include(["trip.author"]);
     
     query.find({
 		success: function(results) {
+            console.log("get details results:"+results);
+            console.log("trip:"+results[0].get("trip").get("name"));
 			for (var i in results) {
                 console.log("retrieving details for entry id" + results[i].id);
 				$("#entry_things").append("<li class='things'>"+results[i].get("place")+"</li>");
@@ -188,7 +198,7 @@ $(function(){
 			addTrip(trip_name, trip_description);
 			showPages2(trip_name);
 			console.log("Got data for new trip", trip_name, trip_description);
-		});
+    });
 	////////////
 	function addTrip(tripname, tripdesc) {
 		console.log("echo");
