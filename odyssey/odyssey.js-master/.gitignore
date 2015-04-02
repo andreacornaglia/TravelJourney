@@ -1,0 +1,11 @@
+.idea
+.swp
+.swo
+*/.sass-cache/
+.sass-cache/
+node_modules
+design
+.ruby-version
+.DS_Store
+_site/
+_config.yml
