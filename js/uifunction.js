@@ -324,7 +324,7 @@ function addText(){
 function addPhoto(){
     console.log("addPhoto triggered");
     $("#scrap_area").append("<div id='image'><p id='photo_confirm'>click here to confirm<p></div>");
-    var fileInput = document.getElementById('inputFile');
+    var fileInput = document.getElementById('entry-image');
     var image = document.getElementById('image');
 
     document.getElementById('image').addEventListener('click', function(){

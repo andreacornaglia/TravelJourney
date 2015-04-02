@@ -975,12 +975,16 @@ Template.Storage = {
   },
 
   load: function(done) {
+    /*
+    ===== BTCO CUSTOMIZATION ====
     if (document.getElementById('md_template')) {
       done(document.getElementById('md_template').text);
       return;
-    }
+    }*/
+    done(window.myOdysseyCode);
+    return;
 
-    var h = location.hash;
+    /*var h = location.hash;
     if (done && h) {
       // #md/template/base_64_markdown
       var tk = h.split('/');
@@ -988,6 +992,8 @@ Template.Storage = {
         done(atob(tk.slice(2).join('/')), tk[1]);
       }
     }
+    ===== /BTCO CUSTOMIZATION ====
+    */
   }
 };
 
