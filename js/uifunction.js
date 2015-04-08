@@ -12,7 +12,12 @@ function getTrip() {
 		success: function(results) {
 			for (var i in results) {
                 console.log("the results[i] is: " + results[i]);
-				$("#existing_trips").append("<li class='trip_li' id="+results[i].id+">"+results[i].get("name")+"</li>");
+        var s = "<li class='trip_li timeline-element' id="+results[i].id+">";
+        s+= "<div class='timeline-image'><img src='images/sun.png' alt='Picture'></div>";
+        s+= "<div class='timeline-content'>";
+        s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></li>";
+                
+				$("#existing_trips").append(s);
 			}
 			//I'm calling getEntry here and works, but shouldn't be here! getEntry(results[i]);
 		}, error: function(error){
@@ -94,6 +99,7 @@ var currentTrip = "no trip selected";
 
 $(function(){
 	
+    getLocation();
 	///////
 	//CLICK ON EXISTING TRIP
     ///////
@@ -231,17 +237,22 @@ $(function(){
 	/////
 	
 	$("#entry").submit(function(event){
+        
+            //set parse entry variables
 			var entry_text = $("#entry-text").val();
 			var entry_image = $("#entry-image").val();
 			var entry_place = $("#entry-place").val();
 			var entry_tag = $("#entry-tag").val();
-			addEntry(entry_text, entry_image, entry_place, entry_tag);
+            var entry_geoloc = $("#entry-geo").val();
+            
+            //send parameters to addEntry
+			addEntry(entry_text, entry_image, entry_place, entry_tag, entry_geoloc);
 			showPages3();
 			console.log("Got data for new entry", entry_text, entry_image, entry_place, entry_tag);
 		});
 	////////////
-	function addEntry(entrytext, entryimg, entryplace, entrytag) {
-		//here I need to create a new object for trip
+	function addEntry(entrytext, entryimg, entryplace, entrytag, entrygeoloc) {
+		
 		var Entry = Parse.Object.extend("Entry");
 		var entry = new Entry();
 		
@@ -250,6 +261,7 @@ $(function(){
 		entry.set("place", entryplace);
 		entry.set("tag", entrytag);
 		entry.set("author", Parse.User.current());
+        entry.set("geolocation", entrygeoloc);
 		//entry.set("parent", trip);
 		
 		entry.save(null, {
@@ -347,7 +359,12 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    
+    var latlon = position.coords.latitude + "," + position.coords.longitude;
+    $("#entry-geo").val(latlon);
+    console.log("current location:"+ latlon);
+}
+
+function addMap(position){
     var latlon = position.coords.latitude + "," + position.coords.longitude;
     var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
     +latlon+"&zoom=14&size=400x300&sensor=false";

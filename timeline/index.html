@@ -6,34 +6,50 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>TIMELINE</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 194.6 412.1" enable-background="new 0 0 194.6 412.1" xml:space="preserve">
-<g id="user1">
-	<line fill="none" stroke="#D31C50" stroke-miterlimit="10" x1="42.8" y1="0" x2="42.8" y2="401"/>
-</g>
-<g id="user1">
-	<line id="line1" fill="none" stroke="#2FB24B" stroke-miterlimit="10" x1="142.8" y1="0" x2="142.8" y2="401"/>
-	<circle fill="#2FB24B" cx="144.8" cy="70.3" r="13.2"/>
-	<circle fill="#2FB24B" cx="144.8" cy="148.3" r="13.2"/>
-	<circle fill="#2FB24B" cx="142.8" cy="325.3" r="13.2"/>
-</g>
-</svg>
-    <script type="text/javascript">
-        var entries = ["70.3", "148.3", "388.3"];
-        window.onload = function() {
-            for (i=0; i<entries.length;i++){
-                var a = document.getElementById("user1");
-                var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'circle'); //Create a path in SVG's namespace
-                newElement.setAttribute("cx","43.8");
-                newElement.setAttribute("cy",entries[i]);
-                newElement.setAttribute("r","13.2");
-                newElement.style.fill = "#D31C50";
-                a.appendChild(newElement);
-            }
-        };
-    </script>
+        <ul id="timeline" class="container">
+            <!--Each entry-->
+            <li class="timeline-element">
+                <div class="timeline-image">
+                    <img src="sun.png" alt="Picture">
+                </div>
+                <div class="timeline-content">
+                    <div class="author_n_date">
+                        <span class="author">Andrea C</span>
+                        <span class="date">Jan 14</span>
+                    </div>
+                    <h2 class="entry-title">Museum of Modern Art</h2>
+                </div>
+            </li>
+            <!--Each entry-->
+            <li class="timeline-element">
+                <div class="timeline-image">
+                    <img src="sun.png" alt="Picture">
+                </div>
+                <div class="timeline-content">
+                    <div class="author_n_date">
+                        <span class="author">Andrea C</span>
+                        <span class="date">Jan 14</span>
+                    </div>
+                    <h2 class="entry-title">Museum of Modern Art</h2>
+                </div>
+            </li>
+            <!--Each entry-->
+            <li class="timeline-element">
+                <div class="timeline-image">
+                    <img src="sun.png" alt="Picture">
+                </div>
+                <div class="timeline-content">
+                    <div class="author_n_date">
+                        <span class="author">Andrea C</span>
+                        <span class="date">Jan 14</span>
+                    </div>
+                    <h2 class="entry-title">Museum of Modern Art</h2>
+                </div>
+            </li>
+        </ul>
     </body>
 </html>
 
