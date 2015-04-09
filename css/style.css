@@ -14,13 +14,14 @@ html, body{
 .header{
   width: 100%;
   background: #80a5bf;
-  text-align: center;
   padding: 10px;
   color: white;
+  display: inline-block;
  
 }
 
 .header h1{
+    margin-left: 50px;
     font-weight: 100;
     font-size: 20px;
 }
@@ -175,6 +176,7 @@ html, body{
 }
 
 #newtrip, #newentry{
+    display: none;
 }
 
 ul{
@@ -264,4 +266,11 @@ ul{
 
 li{
  list-style: none;
+ cursor: pointer;
+}
+
+#entry_back, #trip_back{
+    width: 30px;
+    float:left;
+    margin-top: 8px;
 }

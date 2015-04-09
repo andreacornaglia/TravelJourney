@@ -44,9 +44,13 @@ function getEntry(tripId) {
 	query.find({
 		success: function(results) {
 			for (var i in results) {
-				$("#existing_entries").append("<li class='entry_li' id="+results[i].id+">"+results[i].get("place")+"</li>");
                 console.log(results[i].get("place"));
-			
+                var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
+        s+= "<div class='timeline-image'><img src="+results[i].get("image")+" alt='Picture'></div>";
+        s+= "<div class='timeline-content'>";
+        s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
+                
+				$("#existing_entries").append(s);	
 			}
 			console.log("***************");
 		}, error: function(error){
@@ -240,29 +244,54 @@ $(function(){
         
             //set parse entry variables
 			var entry_text = $("#entry-text").val();
-			var entry_image = $("#entry-image").val();
 			var entry_place = $("#entry-place").val();
 			var entry_tag = $("#entry-tag").val();
             var entry_geoloc = $("#entry-geo").val();
-            
-            //send parameters to addEntry
-			addEntry(entry_text, entry_image, entry_place, entry_tag, entry_geoloc);
+        
+       var fileUploadElement = $("#entry-image")[0];
+	   var filepath = $("#entry-image").val();
+	   var filename = filepath.split('\\').pop();
+        
+       if (fileUploadElement.files.length > 0) {
+		// If there's a file upload it then add a post
+		var file = fileUploadElement.files[0];
+		var parseFile = new Parse.File(filename, file);
+		parseFile.save.then(function(){
+            addEntry(entry_text, file, entry_place, entry_tag, entry_geoloc);
 			showPages3();
 			console.log("Got data for new entry", entry_text, entry_image, entry_place, entry_tag);
+        }, function(error) {
+			console.log("ParseFile Error:"+error.message);
+        });
+           
+       } else {
+		// Else if no file just upload a post
+		saveComment(false);
+	}
+		    
+            //send parameters to addEntry
+			
 		});
+        
 	////////////
-	function addEntry(entrytext, entryimg, entryplace, entrytag, entrygeoloc) {
+        
+	function addEntry(entrytext, file, entryplace, entrytag, entrygeoloc) {
 		
 		var Entry = Parse.Object.extend("Entry");
 		var entry = new Entry();
 		
 		entry.set("text", entrytext);
-		entry.set("image", entryimg);
 		entry.set("place", entryplace);
 		entry.set("tag", entrytag);
 		entry.set("author", Parse.User.current());
         entry.set("geolocation", entrygeoloc);
-		//entry.set("parent", trip);
+        
+		if (file) {
+		  entry.set("image", file);
+	    } else {
+		  entry.set("image", null);
+	    }
+        
 		
 		entry.save(null, {
 			success: function(entry){

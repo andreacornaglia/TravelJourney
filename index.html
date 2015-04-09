@@ -35,6 +35,7 @@
     </div>
 	<div id="trip_area">
         <div class="header">
+            <img src="images/back.png" id="trip_back"/>
             <h1>Your Trips</h1>
         </div>
 		<div id="trip_container" class="timeline">
@@ -44,8 +45,8 @@
                         <img src="images/sun.png" alt="Picture">
                     </div>
                     <div class="timeline-content">
-                    <h2 class="entry-title">Add New Trip</h2>
-                </div>
+                        <h2 class="entry-title">Add New Trip</h2>
+                    </div>
                     <!--
                     <span>Add a new Trip</span>
                     <div id="newtrip">
@@ -62,13 +63,17 @@
 	</div>
 	<div id="entry_area">
         <div class="header">
-            <h1 id="trip_entry">Trip's Entries</h1>
+            <img src="images/back.png" id="entry_back"/>
+            <h1 id="entry_trip_name">Trip's Entries</h1>
         </div>
-		<div id="entry_container">
-			<h1 id="entry_trip_name"></h1>
+		<div id="entry_container" class="timeline">
             <ul id="existing_entries">
-                    <li class="entry_lialt">
-                        <span>Create a new Entry</span>
+                <li class="trip_lialt timeline-element">
+                    <div class="timeline-image">
+                        <img src="images/sun.png" alt="Picture">
+                    </div>
+                    <div class="timeline-content">
+                        <h2 class="entry-title">Add New Entry</h2>
                         <div id="newentry">
                             <form id="entry">
                               <p>text<br><input id="entry-text" type="text"></p>
@@ -79,9 +84,9 @@
                               <p><input type="submit"></p>
                             </form>
                         </div>
-                    </li>
+                    </div>
+                </li>
             </ul>
-			
 		</div>
 	</div>
       <div id="details_area">
