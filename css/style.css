@@ -121,6 +121,11 @@ html, body{
     background-position: center;
 }
 
+.details_photo{
+    width: 160px;
+    height: 160px;
+}
+
 .btn_selectbig span{
 	margin-top:20px;
 	color:white;
@@ -198,10 +203,10 @@ ul{
   content: '';
   position: absolute;
   top: 0;
-  left: 30px;
+  left: 35px;
   height: 100%;
   width: 4px;
-  background: #000;
+  background: #666;
 }
 
 .timeline-image{
@@ -241,7 +246,7 @@ ul{
   border-right: 7px solid white;
 }
 
-.entry-title{
+.entry-title, .addtrip-title{
     font-size: 15px;
     color: #097cb3;
 }

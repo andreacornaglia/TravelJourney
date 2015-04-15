@@ -36,18 +36,22 @@ function getEntry(tripId) {
 	var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
     query.descending("createdAt");
-    var Trip = Parse.Object.extend("Trip");
-	var trip = new Trip({id:tripId});
+   // var Trip = Parse.Object.extend("Trip");
+   //var trip = new Trip({id:tripId});
     
-	query.equalTo("trip", trip);
+	query.equalTo("mytrip", tripId);
     
 	query.find({
 		success: function(results) {
 			for (var i in results) {
                 console.log(results[i].get("place"));
+                var parseDate = results[i].get("createdAt");
+                var date = moment(parseDate).calendar();
+                
                 var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
         s+= "<div class='timeline-image'><img src="+results[i].get("image").url()+" alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
+        s+= "<p class='date'>"+date+"</p>";
         s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
                 
 				$("#existing_entries").append(s);	
@@ -68,26 +72,26 @@ function getDetails(entryId) { // tripId: String
     
     var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
-    
-    // object to save in field var trip = new Trip({id:"idfortrip"})
-    // object parent var entry = new Entry()
-    // entry.set("trip", trip)
-    // NOT THIS entry.set("trip", "tripid")
   
     query.equalTo("objectId", entryId);
     query.include("trip");
-    // query.include(["trip.author"]);
     
     query.find({
 		success: function(results) {
             console.log("get details results:"+results);
             console.log("trip:"+results[0].get("trip").get("name"));
 			for (var i in results) {
+                var parseDate = results[i].get("createdAt");
+                var date = moment(parseDate).calendar();
+                var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+    +results[i].get("geolocation")+"&zoom=14&size=400x300&sensor=false";
+                
                 console.log("retrieving details for entry id" + results[i].id);
-				$("#entry_things").append("<li class='things'>"+results[i].get("place")+"</li>");
-                $("#entry_things").append("<li class='things'>"+results[i].get("image")+"</li>");
+                $("#entry_things").append("<img class='details_photo' src="+results[i].get("image").url()+">");
                 $("#entry_things").append("<li class='things'>"+results[i].get("text")+"</li>");
-                $("#entry_things").append("<li class='things'>"+results[i].get("tag")+"</li>");
+                
+                $("#entry_things").append("<div id='mapholder'><img src='"+img_url+"'></div>");
+                $("#entry_things").append("<li class='things'>"+date+"</li>");
 			
 			}
 			console.log("***************");
@@ -343,17 +347,6 @@ $(function(){
     
 });
 
-//function to open/close the dropdown area of new trip/entry
-
-$(".trip_lialt span").on('click', function(){
-    $("#newtrip").toggle();
-})
-
-$(".entry_lialt span").on('click', function(){
-    $("#entry_area").css("display","none");
-    $("#compose_area").css("display","visible");
-})
-
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -391,4 +384,8 @@ $("#details_back").on("click", function(){
 
 $(".entry-title").on("click", function(){
     $("#newentry").toggle("display");
+})
+
+$(".addtrip-title").on("click", function(){
+    $("#newtrip").toggle("display");
 })
