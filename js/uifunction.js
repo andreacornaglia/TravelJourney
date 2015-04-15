@@ -13,7 +13,7 @@ function getTrip() {
 			for (var i in results) {
                 console.log("the results[i] is: " + results[i]);
         var s = "<li class='trip_li timeline-element' id="+results[i].id+">";
-        s+= "<div class='timeline-image'><img src='images/sun.png' alt='Picture'></div>";
+        s+= "<div class='timeline-image'><img src='"+results[i].get("image")+"' alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
         s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></li>";
                 
@@ -46,7 +46,7 @@ function getEntry(tripId) {
 			for (var i in results) {
                 console.log(results[i].get("place"));
                 var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
-        s+= "<div class='timeline-image'><img src="+results[i].get("image")+" alt='Picture'></div>";
+        s+= "<div class='timeline-image'><img src="+results[i].get("image").url()+" alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
         s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
                 
@@ -116,7 +116,7 @@ $(function(){
 		$("#entry_trip_name").text(name);
         //is this correct??
         var id = $(this).attr('id');
-        
+        $("#entry_trip_name").addClass(id);
         console.log("id is" + id);
 		$("#existing_entries").addClass("a"+id);
         //here I need to call the fuction to populate the trip with the entries, but not working
@@ -203,11 +203,12 @@ $(function(){
 	//CREATE TRIP
 	/////
 	$("#trip").submit(function(event){
-			var trip_name = $("#trip-name").val();
-			var trip_description = $("#trip-description").val();
-			addTrip(trip_name, trip_description);
-			showPages2(trip_name);
-			console.log("Got data for new trip", trip_name, trip_description);
+        console.log("Trip is being added", trip_name, trip_description);
+        var trip_name = $("#trip-name").val();
+        var trip_description = $("#trip-description").val();
+        addTrip(trip_name, trip_description);
+        showPages2(trip_name);
+        console.log("Got data for new trip", trip_name, trip_description);
     });
 	////////////
 	function addTrip(tripname, tripdesc) {
@@ -241,67 +242,66 @@ $(function(){
 	/////
 	
 	$("#entry").submit(function(event){
-        
-            //set parse entry variables
-			var entry_text = $("#entry-text").val();
-			var entry_place = $("#entry-place").val();
-			var entry_tag = $("#entry-tag").val();
-            var entry_geoloc = $("#entry-geo").val();
+       event.preventDefault();
+       console.log("Entry is being submitted");
         
        var fileUploadElement = $("#entry-image")[0];
 	   var filepath = $("#entry-image").val();
 	   var filename = filepath.split('\\').pop();
         
        if (fileUploadElement.files.length > 0) {
-		// If there's a file upload it then add a post
-		var file = fileUploadElement.files[0];
-		var parseFile = new Parse.File(filename, file);
-		parseFile.save.then(function(){
-            addEntry(entry_text, file, entry_place, entry_tag, entry_geoloc);
-			showPages3();
-			console.log("Got data for new entry", entry_text, entry_image, entry_place, entry_tag);
-        }, function(error) {
-			console.log("ParseFile Error:"+error.message);
-        });
-           
-       } else {
-		// Else if no file just upload a post
-		saveComment(false);
-	}
-		    
-            //send parameters to addEntry
+			// If there's a file upload it then add a post
+			var file = fileUploadElement.files[0];
+			var parseFile = new Parse.File(filename, file);
 			
-		});
+			parseFile.save().then(function() {
+				console.log("ParseFile Success");
+				addEntry(parseFile);
+			}, function(error) {
+				console.log("ParseFile Error:"+error.message);
+			});
+		} else {
+			// Else if no file just upload a post
+			addEntry(false);
+		}
+      console.log("Entry is ok, proceed to addEntry");
+    });
         
 	////////////
         
-	function addEntry(entrytext, file, entryplace, entrytag, entrygeoloc) {
-		
+	function addEntry(file) {
+        console.log("addEntry is activated");
 		var Entry = Parse.Object.extend("Entry");
 		var entry = new Entry();
+        
+        var entry_text = $("#entry-text").val();
+        var entry_place = $("#entry-place").val();
+        var entry_tag = $("#entry-tag").val();
+        var entry_geoloc = $("#entry-geo").val();
+        var entry_trip = $("#entry_trip_name").attr("class");
+        console.log(entry_trip);
 		
-		entry.set("text", entrytext);
-		entry.set("place", entryplace);
-		entry.set("tag", entrytag);
+		entry.set("text", entry_text);
+		entry.set("place", entry_place);
+		entry.set("tag", entry_tag);
 		entry.set("author", Parse.User.current());
-        entry.set("geolocation", entrygeoloc);
+        entry.set("geolocation", entry_geoloc);
+        entry.set("mytrip", entry_trip);
         
 		if (file) {
 		  entry.set("image", file);
-	    } else {
-		  entry.set("image", null);
-	    }
-        
+        }
 		
 		entry.save(null, {
 			success: function(entry){
 				console.log("Created entry with success");
 			},
-			error: function(entry, error) {
+			error: function(entry, error) { //giving error here: invalid type for key image, expected string, but got file
 				console.log("Adding entry error:"+error.message);
 			}
 		});
-	}
+	   console.log("addEntry works!");
+    }
 	////
 	function showPages3(){
 		event.preventDefault();
@@ -354,30 +354,6 @@ $(".entry_lialt span").on('click', function(){
     $("#compose_area").css("display","visible");
 })
 
-function addText(){
-    console.log("addText triggered");
-    $("#scrap_area").append("<div class='textArea'> hello world!</div>");
-}
-
-
-/*Code working without the back-end*/
-
-function addPhoto(){
-    console.log("addPhoto triggered");
-    $("#scrap_area").append("<div id='image'><p id='photo_confirm'>click here to confirm<p></div>");
-    var fileInput = document.getElementById('entry-image');
-    var image = document.getElementById('image');
-
-    document.getElementById('image').addEventListener('click', function(){
-		$("#photo_confirm").css("display", "none");
-        var fileUrl = window.URL.createObjectURL(fileInput.files[0]);
-
-        $('#image').css('background-image','url('+ fileUrl +')');
-		$('#image').draggable();
-    });
-
-};
-
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -401,3 +377,18 @@ function addMap(position){
     document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
     console.log("I'm getting the map");
 }
+
+$("#entry_back").on("click", function(){
+    $("#trip_area").css("display","block");
+    $("#details_area").css("display","none");
+    $("#entry_area").css("display","none");
+});
+
+$("#details_back").on("click", function(){
+    $("#details_area").css("display","none");
+    $("#entry_area").css("display","block");
+});
+
+$(".entry-title").on("click", function(){
+    $("#newentry").toggle("display");
+})

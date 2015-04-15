@@ -206,19 +206,19 @@ ul{
 
 .timeline-image{
   position: absolute;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
   top: 0;
   left: 0;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: #fff;
-  border: 3px solid #fff;
 }
 
 .timeline-image img{
-  display: block;
-  width: 100%;
-  position: relative;
+    width: 200px;
 }
 
 .timeline-content {
@@ -269,8 +269,9 @@ li{
  cursor: pointer;
 }
 
-#entry_back, #trip_back{
+#entry_back, #details_back, #navicon{
     width: 30px;
     float:left;
     margin-top: 8px;
 }
+

@@ -4,7 +4,7 @@
 
 var Image = require("parse-image");
 
-Parse.Cloud.beforeSave("Comment", function(request, response) {
+Parse.Cloud.beforeSave("Entry", function(request, response) {
 	var comment = request.object;
 	if (!comment.get("image")) {
 		response.error("no image");
