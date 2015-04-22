@@ -1,19 +1,33 @@
 // Init Parse with keys
-	Parse.initialize("7wO9zjz5xMgigdjzUShTe9KFpGJfsRS9zUyeVD2I", "t7YR5eMgZGJSdsDy3InZeggIwGI0xOY6uCxB44zK");
+Parse.initialize("7wO9zjz5xMgigdjzUShTe9KFpGJfsRS9zUyeVD2I", "t7YR5eMgZGJSdsDy3InZeggIwGI0xOY6uCxB44zK");
+    
+//Defining Parse Variables
+var Trip = Parse.Object.extend("Trip");
+var Entry = Parse.Object.extend("Entry");
+    
+//Defining Global Variables
+var listTrips = [];
+var listEntries = [];
+var currentTrip = "no trip selected";
+var currentEntry = "no entry selected";
+var currentUser = "no user selected";
 
-    ///////
-	//SHOW EXISTING TRIPS
-    ///////
+/////////SHOW EXISTING TRIPS
 function getTrip() {
-	var Trip = Parse.Object.extend("Trip");
 	var query = new Parse.Query(Trip);
     query.descending("createdAt");
+    
 	query.find({
 		success: function(results) {
 			for (var i in results) {
                 console.log("the results[i] is: " + results[i]);
         var s = "<li class='trip_li timeline-element' id="+results[i].id+">";
-        s+= "<div class='timeline-image'><img src='"+results[i].get("image")+"' alt='Picture'></div>";
+                
+         /*var src = results[i].get("image").url();
+         if ( src === undefined) {
+            src = "../images/balloon.jpg";
+        }*/
+        s+= "<div class='timeline-image'><img src='../images/balloon.jpg' alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
         s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></li>";
                 
@@ -28,49 +42,63 @@ function getTrip() {
 
 getTrip();
 
-    ///////
-	//X//SHOW ENTRIES ONCE CLICKED ON TRIP
-    ///////
-function getEntry(tripId) { 
-	console.log("getting entries for trip id:" + tripId);
-	var Entry = Parse.Object.extend("Entry");
+
+function getEntriesForAuthor(tripId, nauthor, where) {
+    console.log("getting entries for trip id:" + tripId);
 	var query = new Parse.Query(Entry);
-    query.descending("createdAt");
-   // var Trip = Parse.Object.extend("Trip");
-   //var trip = new Trip({id:tripId});
+    query.include('user');
     
+    query.descending("createdAt");
+    
+    //var author = Parse.User.current();
+    var companion = new Parse.User();
+    companion.id = nauthor;
+    
+    query.equalTo('author', companion);
 	query.equalTo("mytrip", tripId);
     
 	query.find({
 		success: function(results) {
+            console.log("Get Entry:"+results.length);
+            currentEntries = results;
 			for (var i in results) {
-                console.log(results[i].get("place"));
-                var parseDate = results[i].get("createdAt");
-                var date = moment(parseDate).calendar();
                 
-                var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
-        s+= "<div class='timeline-image'><img src="+results[i].get("image").url()+" alt='Picture'></div>";
-        s+= "<div class='timeline-content'>";
-        s+= "<p class='date'>"+date+"</p>";
-        s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
+                    console.log("Get Entry Place:"+results[i].get("place"));
+                    var parseDate = results[i].createdAt;
+                    console.log(parseDate);
+                    var date = moment(parseDate).calendar();
+                    var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
                 
-				$("#existing_entries").append(s);	
+                var src = results[i].get("image").url();
+                if ( src === undefined) {
+                    src = "../images/balloon.jpg";
+                }
+                
+            s+= "<div class='timeline-image'><img src="+src+" alt='Picture'></div>";
+            s+= "<div class='timeline-content'>";
+            s+= "<p class='date'>"+date+"</p>";
+            s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
+
+                $(where).append(s);
 			}
 			console.log("***************");
 		}, error: function(error){
-			console.log("error trying to retrieve the existing entry list");
+			console.log("error trying to retrieve the existing entry list:"+error.message);
 		}
 	})
+}
+
+
+/////////SHOW ENTRIES ONCE CLICKED ON TRIP
+function getEntry(tripId) {
+    getEntriesForAuthor(tripId, "P5qHOwGGdb", "#existing_entries_andrea");
+    getEntriesForAuthor(tripId, "Tj8VJdjVVR", "#existing_entries_bruno");
 }	
 
-    ///////
-	//SHOW DETAILS ONCE CLICKED ON ENTRY
-    ///////
+/////////SHOW DETAILS ONCE CLICKED ON ENTRY
 
 function getDetails(entryId) { // tripId: String
     console.log("Searching for entry:"+entryId);
-    
-    var Entry = Parse.Object.extend("Entry");
 	var query = new Parse.Query(Entry);
   
     query.equalTo("objectId", entryId);
@@ -79,7 +107,6 @@ function getDetails(entryId) { // tripId: String
     query.find({
 		success: function(results) {
             console.log("get details results:"+results);
-            console.log("trip:"+results[0].get("trip").get("name"));
 			for (var i in results) {
                 var parseDate = results[i].get("createdAt");
                 var date = moment(parseDate).calendar();
@@ -88,7 +115,7 @@ function getDetails(entryId) { // tripId: String
                 
                 console.log("retrieving details for entry id" + results[i].id);
                 $("#entry_things").append("<img class='details_photo' src="+results[i].get("image").url()+">");
-                $("#entry_things").append("<li class='things'>"+results[i].get("text")+"</li>");
+                $("#entry_things").append("<input class='things' readonly value='"+results[i].get("text")+"'/>");
                 
                 $("#entry_things").append("<div id='mapholder'><img src='"+img_url+"'></div>");
                 $("#entry_things").append("<li class='things'>"+date+"</li>");
@@ -102,19 +129,15 @@ function getDetails(entryId) { // tripId: String
 }	
 
 
-
-var currentTrip = "no trip selected";
-
 $(function(){
 	
     getLocation();
-	///////
-	//CLICK ON EXISTING TRIP
-    ///////
+    
+/////////CLICK ON EXISTING TRIP
 	$("#existing_trips").on("click", ".trip_li", function() {
 		console.log("Trip li in existing trip clicked");
 		$("#trip_area").css("display","none");
-		$("#entry_area").css("display","visible");
+		$("#entry_area").css("display","block");
         var name = $(this).text();
         console.log("name is" + name);
 		$("#entry_trip_name").text(name);
@@ -129,13 +152,23 @@ $(function(){
         getEntry(id);
 	});
     
-    ///////
-	//CLICK ON EXISTING ENTRY
-    ///////
-    $("#existing_entries").on("click", ".entry_li", function() {
+    
+/////////CLICK ON EXISTING ENTRY
+    $("#existing_entries_andrea").on("click", ".entry_li", function() {
 		console.log("Trip li in existing trip clicked");
 		$("#entry_area").css("display","none");
-		$("#details_area").css("display","visible");
+		$("#details_area").css("display","block");
+        var name = $(this).text();
+        console.log("name is" + name);
+		$("#entry_entry_name").text(name);
+        var id = $(this).attr('id');
+        console.log("entry id is" + id);
+        getDetails(id);
+	});
+    $("#existing_entries_bruno").on("click", ".entry_li", function() {
+		console.log("Trip li in existing trip clicked");
+		$("#entry_area").css("display","none");
+		$("#details_area").css("display","block");
         var name = $(this).text();
         console.log("name is" + name);
 		$("#entry_entry_name").text(name);
@@ -145,18 +178,16 @@ $(function(){
 	});
 	
 	
-	//LOGIN AND SIGN UP
-	/////////////
-    //LOGIN ACTIVATES
+///////////LOGIN AND SIGN UP
+///////////////LOGIN ACTIVATES
     $("#login").submit(function(event){
 			var name = $("#login-name").val();
 			var pass = $("#login-password").val();
 			login(name, pass);
 			showPages();
 		});
-    ////////
-	//SIGNUP ACTIVATES	
-    ///////
+    
+//////////SIGNUP ACTIVATES	
 		$("#signup").submit(function(event) {
 			console.log("Sign in submit");
 			var name = $("#signup-name").val();
@@ -168,11 +199,10 @@ $(function(){
 	function showPages(){
 		event.preventDefault();
 		$("#login_area").css("display","none");
-		$("#trip_area").css("display","visible");
+		$("#trip_area").css("display","block");
 	}
-    ////////
-	//SIGN UP FUNCTION
-    ///////
+    
+//////////SIGN UP FUNCTION
 	 function signup(username, email, password) {
 		console.log("Sign up new User", username, email, password);
 		var user = new Parse.User();
@@ -190,9 +220,8 @@ $(function(){
 		});
 		
 	}
-    ///////
-	//LOGIN FUNCTION
-    ///////
+
+/////////LOGIN FUNCTION
 	function login(username, password) {
 		Parse.User.logIn(username, password, {
 			success: function(user){
@@ -203,27 +232,59 @@ $(function(){
 			}
 		});
 	}
-	//////////////////
-	//CREATE TRIP
-	/////
+
+///////////////CREATE TRIP
 	$("#trip").submit(function(event){
         console.log("Trip is being added", trip_name, trip_description);
-        var trip_name = $("#trip-name").val();
-        var trip_description = $("#trip-description").val();
+        
+       var fileUploadElement = $("#trip-image")[0];
+	   var filepath = $("#trip-image").val();
+	   var filename = filepath.split('\\').pop();
+        
+       if (fileUploadElement.files.length > 0) {
+			// If there's a file upload it then add a post
+			var file = fileUploadElement.files[0];
+			var parseFile = new Parse.File(filename, file);
+			
+			parseFile.save().then(function() {
+				console.log("ParseFile Success");
+				addTrip(parseFile);
+			}, function(error) {
+				console.log("ParseFile Error:"+error.message);
+			});
+		} else {
+			// Else if no file just upload a post
+			addTrip(false);
+		}
+      console.log("Entry is ok, proceed to addEntry");
+        
+        
         addTrip(trip_name, trip_description);
         showPages2(trip_name);
         console.log("Got data for new trip", trip_name, trip_description);
     });
-	////////////
-	function addTrip(tripname, tripdesc) {
+
+////////////ADD TRIP
+	function addTrip(file) {
 		console.log("echo");
 		//here I need to create a new object for trip
 		var Trip = Parse.Object.extend("Trip");
 		var trip = new Trip();
+        
+        var trip_name = $("#trip-name").val();
+        var trip_description = $("#trip-description").val();
+        var trip_date_start = $("#trip-date-start").val();
+        var trip_date_end = $("#trip-date-end").val();
 		
-		trip.set("name", tripname);
-		trip.set("description", tripdesc);
+		trip.set("name", trip_name);
+		trip.set("description", trip_description);
 		trip.set("author", Parse.User.current());
+        trip.set("dateStart", trip_date_start);
+        trip.set("dateEnd", trip_date_end);
+        
+        if (file) {
+		  entry.set("image", file);
+        }
 		
 		trip.save(null, {
 			success: function(trip){
@@ -238,16 +299,15 @@ $(function(){
 	function showPages2(trip_name){
 		event.preventDefault();
 		$("#trip_area").css("display","none");
-		$("#entry_area").css("display","visible");
+		$("#entry_area").css("display","block");
         $("#entry_trip_name").text(trip_name);
 	}
-	//////////////////
-	//CREATE ENTRY
-	/////
-	
+    
+/////////////CREATE ENTRY
 	$("#entry").submit(function(event){
        event.preventDefault();
        console.log("Entry is being submitted");
+       var trip_name = $("#h1").text();
         
        var fileUploadElement = $("#entry-image")[0];
 	   var filepath = $("#entry-image").val();
@@ -271,8 +331,7 @@ $(function(){
       console.log("Entry is ok, proceed to addEntry");
     });
         
-	////////////
-        
+////////////ADD ENTRY 
 	function addEntry(file) {
         console.log("addEntry is activated");
 		var Entry = Parse.Object.extend("Entry");
@@ -305,12 +364,13 @@ $(function(){
 			}
 		});
 	   console.log("addEntry works!");
+       showPages2(trip_name);
     }
 	////
 	function showPages3(){
 		event.preventDefault();
 		$("#entry_area").css("display","none");
-		$("#done_area").css("display","visible");
+		$("#done_area").css("display","block");
 	}
 	
     // Initialize page stuff
@@ -323,9 +383,8 @@ $(function(){
         // show log in screen
     }
     
-    ////////
-    //ANIMATE THE COMPOSE BUTTON
-    //////////
+
+//////////ANIMATE THE COMPOSE BUTTON
     var step=Math.PI/4;
     var offset= -3 * Math.PI/8;
     
@@ -347,6 +406,7 @@ $(function(){
     
 });
 
+//////////GET LOCATION
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
@@ -371,6 +431,7 @@ function addMap(position){
     console.log("I'm getting the map");
 }
 
+//////////SCREEN TRANSITIONS
 $("#entry_back").on("click", function(){
     $("#trip_area").css("display","block");
     $("#details_area").css("display","none");
@@ -388,4 +449,15 @@ $(".entry-title").on("click", function(){
 
 $(".addtrip-title").on("click", function(){
     $("#newtrip").toggle("display");
+})
+
+$("#h2_add_new_trip").on("click", function(){
+    $("#trip_area").css("display","none");
+    $("#addoredit_trip_area").css("display","block");
+    $("#edit_trip_name").text("New Trip");
+})
+
+////LOGOUT
+$("#logout").on("click", function(){
+    Parse.User.logOut();
 })

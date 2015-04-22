@@ -37,6 +37,7 @@
         <div class="header">
             <img src="images/navicon.png" id="navicon"/>
             <h1>My Trip History</h1>
+            <p id="logout">X</p>
         </div>
 		<div id="trip_container" class="timeline">
 			<ul id="existing_trips">
@@ -45,27 +46,20 @@
                         <img src="images/balloon.jpg" alt="Picture">
                     </div>
                     <div class="timeline-content">
-                        <h2 class="addtrip-title">Add New Trip</h2>
-                        <div id="newtrip">
-                            <form id="trip">
-                              <p>name<br><input id="trip-name" type="text"></p>
-                              <p>description<br><input id="trip-description" type="text"></p>
-                              <p><input type="submit"></p>
-                            </form>
-                        </div>
+                        <h2 id="h2_add_new_trip" class="addtrip-title">Add New Trip</h2>
                     </div>
                 </li>
 			</ul>
-			
 		</div>
 	</div>
 	<div id="entry_area">
         <div class="header">
             <img src="images/back.png" id="entry_back"/>
             <h1 id="entry_trip_name">Trip's Entries</h1>
+            <img src="images/edit.png" id="trip_edit"/>
         </div>
 		<div id="entry_container" class="timeline">
-            <ul id="existing_entries">
+            <ul id="existing_entries_andrea">
                 <li class="trip_lialt timeline-element">
                     <div class="timeline-image">
                         <img src="images/sun.png" alt="Picture">
@@ -85,9 +79,11 @@
                     </div>
                 </li>
             </ul>
+            <ul id="existing_entries_bruno">
+            </ul>
 		</div>
 	</div>
-      <div id="details_area">
+    <div id="details_area">
           <div class="header">
             <img src="images/back.png" id="details_back"/>
             <h1 id="entry_entry_name">Entry's Name</h1>
@@ -95,30 +91,24 @@
           <div id="details_container">
             <ul id="entry_things"></ul>
           </div>
-      </div>
-    <!-- Compose Area     
-    <div id="compose_area">
-        <div id="scrap_area">
-            &nbsp;
+    </div>
+    <div id="addoredit_trip_area">
+        <div id="header_addoredit">
+            <img src="images/back.png" id="details_back"/>
+            <h1 id="edit_trip_name"></h1>
         </div>
-        <div id="footer">
-            <div id="box">
-                <div class="btn_select" id="add_photos" onClick="addPhoto()">
-                    <input id="entry-image" type="file" multiple>
-                </div>
-                <div class="btn_select" id="entry-text" onClick="addText()">
-                </div>
-                <div class="btn_select" id="entry-tag">
-                </div>
-                <div class="btn_select" id="entry-place" onclick="getLocation()">
-                </div>
-                <div class="btn_selectbig" id="add_media">
-                </div>
-            </div>
+        <div id="newtrip">
+            <form id="trip">
+                <p><input type="file" id="trip-image"></p>
+                <p>name<br><input id="trip-name" type="text"></p>
+                <p>description<br><input id="trip-description" type="text"></p>
+                <p>dates <input id="trip-date-start" placeholder="from" type="date"> to <input id="trip-date-finish" placeholder="to" type="date"></p>
+                <p>collaborators<input id="trip-collaborator" type="text"></p>
+                <p><input type="submit"></p>
+            </form>
         </div>
     </div>
-    <!--/Compose Area --> 
-    
+      
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>

@@ -17,13 +17,14 @@ html, body{
   padding: 10px;
   color: white;
   display: inline-block;
- 
+  box-sizing: border-box;
 }
 
-.header h1{
+.header h1, #header_addoredit h1{
     margin-left: 50px;
     font-weight: 100;
     font-size: 20px;
+    float:left;
 }
 
 #footer{
@@ -136,14 +137,16 @@ html, body{
 }
 
 #login_area, #trip_area, #entry_area, #details_area, #compose_area{
-	position: fixed;
 	left:0;
 	width:100%;
-	height: 100%;
 }
 
 #trip_area, #entry_area, #details_area{
     background-color: white;
+}
+
+#entry_area, #details_area, #addoredit_trip_area{
+    display: none;
 }
 
 #login_area{
@@ -155,11 +158,10 @@ html, body{
 #trip_area{ z-index:9;}
 #entry_area{z-index:8;}
 #compose_area{z-index:5;}
+#details_area{z-index:1;}
 
 #login_container, #trip_container, #entry_container{
-	margin-right: auto;
-	margin-left: auto;
-	margin-top:20px;
+	width: 100%;
 }
 
 #details_container{
@@ -197,27 +199,25 @@ ul{
 .timeline-element{
     position: relative;
     margin: 2em 0;
+    min-height: 130px;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 35px;
+  left: 75px;
   height: 100%;
   width: 4px;
   background: #666;
 }
 
 .timeline-image{
-  position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 140px;
+  height: 140px;
   overflow: hidden;
-  top: 0;
-  left: 0;
-  width: 80px;
-  height: 80px;
+  margin-right: auto;
+  margin-left: auto;
   border-radius: 50%;
   background: #fff;
 }
@@ -227,23 +227,7 @@ ul{
 }
 
 .timeline-content {
-  position: relative;
-  margin-left: 80px;
-  background: white;
-  border-radius: 0.25em;
-  padding: 1em;
-  background: #fff;
-}
-
-.timeline-content::before {
-  content: '';
-  position: absolute;
-  top: 16px;
-  right: 100%;
-  height: 0;
-  width: 0;
-  border: 7px solid transparent;
-  border-right: 7px solid white;
+  text-align: center;
 }
 
 .entry-title, .addtrip-title{
@@ -266,7 +250,6 @@ ul{
 .date{
     color:#777;
     font-size: 12px;
-    float: right;
 }
 
 li{
@@ -280,3 +263,33 @@ li{
     margin-top: 8px;
 }
 
+#trip_edit {
+  width: 25px;
+  float: right;
+  margin-top: 8px;
+  margin-right: 20px;
+}
+
+#header_addoredit{
+  width: 100%;
+  background-image: url(../images/new_trip.png);
+  padding: 10px;
+  color: white;
+  display: inline-block;
+  box-sizing: border-box;
+  height: 200px;
+}
+
+#newtrip{
+    padding: 10px;
+}
+
+#existing_entries_andrea, #existing_entries_bruno {
+    width: 50%;
+    float: left;
+    margin: 0;
+    text-align: center;
+}
+
+#existing_entries_andrea{ background: #ef735c;}
+#existing_entries_bruno{}
