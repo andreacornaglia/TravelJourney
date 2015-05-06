@@ -21,17 +21,13 @@ function getTrip() {
 		success: function(results) {
 			for (var i in results) {
                 console.log("the results[i] is: " + results[i]);
-        var s = "<li class='trip_li timeline-element' id="+results[i].id+">";
-                
-         /*var src = results[i].get("image").url();
-         if ( src === undefined) {
-            src = "../images/balloon.jpg";
-        }*/
+        var s = "<div class='swiper-slide trip_li' id="+results[i].id+">";
         s+= "<div class='timeline-image'><img src='../images/balloon.jpg' alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
-        s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></li>";
+        s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></div></div>";
                 
 				$("#existing_trips").append(s);
+                activateSwiper();
 			}
 			//I'm calling getEntry here and works, but shouldn't be here! getEntry(results[i]);
 		}, error: function(error){
@@ -43,18 +39,12 @@ function getTrip() {
 getTrip();
 
 
-function getEntriesForAuthor(tripId, nauthor, where) {
+function getEntry(tripId) {
     console.log("getting entries for trip id:" + tripId);
 	var query = new Parse.Query(Entry);
     query.include('user');
     
     query.descending("createdAt");
-    
-    //var author = Parse.User.current();
-    var companion = new Parse.User();
-    companion.id = nauthor;
-    
-    query.equalTo('author', companion);
 	query.equalTo("mytrip", tripId);
     
 	query.find({
@@ -63,23 +53,25 @@ function getEntriesForAuthor(tripId, nauthor, where) {
             currentEntries = results;
 			for (var i in results) {
                 
-                    console.log("Get Entry Place:"+results[i].get("place"));
-                    var parseDate = results[i].createdAt;
-                    console.log(parseDate);
-                    var date = moment(parseDate).calendar();
-                    var s = "<li class='entry_li timeline-element' id="+results[i].id+">";
+                console.log("Get Entry Place:"+results[i].get("place"));
+                var parseDate = results[i].createdAt;
+                console.log(parseDate);
+                var date = moment(parseDate).calendar();
                 
                 var src = results[i].get("image").url();
                 if ( src === undefined) {
                     src = "../images/balloon.jpg";
                 }
+                    
+                var s = "<div class='entry_li tile_padding e"+results[i].get("author").id+"' id="+results[i].id+"><div class='tile' style='background-image:url(" + src + ")'></div></div>";
                 
-            s+= "<div class='timeline-image'><img src="+src+" alt='Picture'></div>";
-            s+= "<div class='timeline-content'>";
-            s+= "<p class='date'>"+date+"</p>";
-            s+="<h2 class='entry-title'>"+results[i].get("place")+"</h2></div></li>";
+                
+            /*s+= "<div class='timeline-content'>";
+            s+= "<p class='date'>"+date+", "+results[i].get("place")+"</p></div>";
+            s+= "<div class='timeline-image'><img src="+src+" alt='Picture'></div></li>";*/
+               /* $('.tile').css('background-image','url(' + src + ')');*/
 
-                $(where).append(s);
+                $("#existing_entries").append(s);
 			}
 			console.log("***************");
 		}, error: function(error){
@@ -87,13 +79,6 @@ function getEntriesForAuthor(tripId, nauthor, where) {
 		}
 	})
 }
-
-
-/////////SHOW ENTRIES ONCE CLICKED ON TRIP
-function getEntry(tripId) {
-    getEntriesForAuthor(tripId, "P5qHOwGGdb", "#existing_entries_andrea");
-    getEntriesForAuthor(tripId, "Tj8VJdjVVR", "#existing_entries_bruno");
-}	
 
 /////////SHOW DETAILS ONCE CLICKED ON ENTRY
 
@@ -235,7 +220,8 @@ $(function(){
 
 ///////////////CREATE TRIP
 	$("#trip").submit(function(event){
-        console.log("Trip is being added", trip_name, trip_description);
+        event.preventDefault();
+        console.log("Trip is being added");
         
        var fileUploadElement = $("#trip-image")[0];
 	   var filepath = $("#trip-image").val();
@@ -258,9 +244,8 @@ $(function(){
 		}
       console.log("Entry is ok, proceed to addEntry");
         
-        
         addTrip(trip_name, trip_description);
-        showPages2(trip_name);
+        //showPages2(trip_name);
         console.log("Got data for new trip", trip_name, trip_description);
     });
 
@@ -394,14 +379,17 @@ $(function(){
             var y=(Math.cos(step*i+offset)*90)+30;
             $(this).animate({left:x+"px",bottom:y+"px"},200);
     	});
+        $("#overlay").css('display','block');
     });
     
     $(".btn_select").click(function(){
         $(".btn_select").animate({left:"70px",bottom:"30px"},200);
+        $("#overlay").css('display','none');
     });
     
     $(".btn_selectbig").click(function(){
         $(".btn_select").animate({left:"70px",bottom:"30px"},200);
+        $("#overlay").css('display','none');
     });
     
 });
@@ -460,4 +448,32 @@ $("#h2_add_new_trip").on("click", function(){
 ////LOGOUT
 $("#logout").on("click", function(){
     Parse.User.logOut();
+})
+
+///slider code
+function activateSwiper() {
+    //initialize swiper when document ready  
+    var mySwiper = new Swiper ('.swiper-container', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: true
+    })        
+};
+
+$(".tile").on("click",function() {
+    console.log("tile clicked");
+    $(this).toggleClass('tile_clicked');
+    $(".tile_bar").toggle("display");
+});
+
+$(document).scroll(function(){  
+    $('#box').fadeOut();
+
+    var scrollA = $('body').scrollTop();
+
+    setTimeout(function(){
+        if(scrollA == $('body').scrollTop()){
+            $('#box').fadeIn();
+        }
+    }, 200);
 })

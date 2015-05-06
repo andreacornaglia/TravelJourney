@@ -1,0 +1,75 @@
+#body, html{
+	width:100%;
+	height:100%;
+	margin:0;
+	padding:0;
+	position:relative;
+}
+
+#header{
+	width:100%;
+	background:#c0c0c0;
+}
+
+#filters{
+	display:inline-block;
+	width:100%;
+}
+
+#filters div{
+	width:33%;
+	float:left;
+	margin:0;
+	border: 1px solid red;
+	box-sizing: border-box;
+}
+
+#page_tiles, #trips_slider{
+	display:inline-block;
+	width:100%;
+}
+
+#trips_slider{
+    display: none;
+}
+
+.swiper-container {
+    width: 90%;
+    height: 600px;
+}
+
+.yellow, .blue, .red{
+    background: #ff0000;
+}
+
+.tile{
+	width:100%;
+	height: 100%;
+	background: blue;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.tile_padding{
+	width:50%;
+	height: 200px;
+	float:left;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.tile_clicked{
+   position: absolute;
+   top: 0%;
+   left: 0;
+    z-index: 2;
+   transition: all 1s;	
+}
+
+.tile_bar{
+    color:#fff;
+    display: none;
+    width: 100%;
+    text-align: right;
+    float:right;
+}

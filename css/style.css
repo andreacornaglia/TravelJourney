@@ -7,8 +7,8 @@ html, body{
     height: 100%;
     margin:0;
     padding:0;
-    font-family: Helvetica, sans-serif;
-    background: #eee;
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+    background: #f1efd3;
 }
 
 .header{
@@ -68,7 +68,10 @@ html, body{
     height: 160px;
     margin-right: auto;
     margin-left: auto;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: -20px;
 }
 
 .btn_selectbig{
@@ -104,9 +107,8 @@ html, body{
 
 #image{
 	margin: 20px;
-	float:left;
-    width: 120px;
-    height: 120px;
+    /*width: 120px;
+    height: 120px;*/
     background-size: 100%;
     background-position: center;
     background-repeat:no-repeat;
@@ -139,10 +141,12 @@ html, body{
 #login_area, #trip_area, #entry_area, #details_area, #compose_area{
 	left:0;
 	width:100%;
+    position: relative;
+    background: #f1efd3;
 }
 
-#trip_area, #entry_area, #details_area{
-    background-color: white;
+#entry_area, #details_area{
+    background: #f1efd3;
 }
 
 #entry_area, #details_area, #addoredit_trip_area{
@@ -155,13 +159,21 @@ html, body{
 }
 
 #login_area{ z-index:10;}
-#trip_area{ z-index:9;}
+#trip_area{ z-index:9; height: 100%;}
 #entry_area{z-index:8;}
 #compose_area{z-index:5;}
 #details_area{z-index:1;}
 
 #login_container, #trip_container, #entry_container{
 	width: 100%;
+}
+
+#entry_container{
+    display: inline-block;
+}
+
+#trip_container{
+    height: 100%;
 }
 
 #details_container{
@@ -190,44 +202,26 @@ ul{
     padding: 0;
 }
 
-.timeline{
-    position: relative;
-    width: 90%;
-    margin: 0 auto;
-}
-
 .timeline-element{
     position: relative;
     margin: 2em 0;
     min-height: 130px;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 75px;
-  height: 100%;
-  width: 4px;
-  background: #666;
-}
-
 .timeline-image{
-  width: 140px;
-  height: 140px;
+  /*width: 140px;
+  height: 140px;*/
   overflow: hidden;
   margin-right: auto;
   margin-left: auto;
-  border-radius: 50%;
   background: #fff;
 }
 
 .timeline-image img{
-    width: 200px;
+    /*width: 200px;*/
 }
 
 .timeline-content {
-  text-align: center;
 }
 
 .entry-title, .addtrip-title{
@@ -284,12 +278,107 @@ li{
     padding: 10px;
 }
 
-#existing_entries_andrea, #existing_entries_bruno {
-    width: 50%;
-    float: left;
+#existing_entries{
     margin: 0;
-    text-align: center;
 }
 
-#existing_entries_andrea{ background: #ef735c;}
-#existing_entries_bruno{}
+#existing_entries li{
+}
+
+.eP5qHOwGGdb{
+    width:45%;
+    margin-left: 0;
+}
+
+.eTj8VJdjVVR{
+   float: right;
+    width: 45%;
+}
+
+/*slider code for trip carrousel*/
+.swiper-container {
+    width: 90%;
+    height: 600px;
+}
+
+#trips_slider{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide{
+  padding: 10px;
+  margin: auto;
+  box-sizing: border-box;
+  background: white;
+}
+
+p#logout{
+    float: right;
+}
+
+/*my entries layout*/
+
+.tile{
+	width:100%;
+	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+    background-size: cover;
+}
+
+.tile_padding {
+  width: 50%;
+  height: 200px;
+  float: left;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.tile_clicked{
+   position: absolute;
+   top: 0%;
+   left: 0;
+    z-index: 2;
+   transition: all 1s;	
+}
+
+.tile_bar{
+    color:#fff;
+    display: none;
+    width: 100%;
+    text-align: right;
+    float:right;
+}
+
+.dummy{
+    background:#80a5bf;
+    color: white;
+}
+
+.dummy h1{
+      position: relative;
+  top: 50%;
+  text-align: center;
+  margin: auto;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-transform: uppercase;
+  font-family: 'Roboto Slab', serif;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;
+}
+
+#overlay{
+    position: absolute;
+    top:0;
+    left: 0;
+    background: rgba(0,0,0,.3);
+    width: 100%;
+    height: 100%;
+    display: none;
+}

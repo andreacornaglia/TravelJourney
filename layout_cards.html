@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Testing Tiles</title>
+	<link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="swiper.min.css"/>
+</head>
+<body>
+    <div id="header">
+        <h1>Travel Journey</h1>
+    </div>
+    <div id="filters">
+        <div id="people">People</div>
+        <div id="days">Days</div>
+        <div id="places">Places</div>
+    </div>
+    <div id="page_tiles">
+        <div class="tile_padding">
+            <div class="tile">
+                <div class="tile_bar">
+                    x
+                </div>
+            </div>
+        </div>
+        <div class="tile_padding">
+            <div class="tile"></div>
+        </div>
+        <div class="tile_padding">
+            <div class="tile"></div>
+        </div>
+        <div class="tile_padding">
+            <div class="tile"></div>
+        </div>
+        <div class="tile_padding">
+            <div class="tile"></div>
+        </div>
+        <div class="tile_padding">
+            <div class="tile"></div>
+        </div>
+
+    </div>
+    <div id="trips_slider">
+        <div class="swiper-container">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide yellow">Slide 1</div>
+            <div class="swiper-slide blue">Slide 2</div>
+            <div class="swiper-slide red">Slide 3</div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/swiper.jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //initialize swiper when document ready  
+            var mySwiper = new Swiper ('.swiper-container', {
+              // Optional parameters
+              direction: 'horizontal',
+              loop: true
+            })        
+        });
+        $(".tile").click(function() {
+            $(this).toggleClass('tile_clicked');
+            $(".tile_bar").toggle("display");
+        });
+    </script>
+</body>
+</html>
