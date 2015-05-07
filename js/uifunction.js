@@ -21,8 +21,14 @@ function getTrip() {
 		success: function(results) {
 			for (var i in results) {
                 console.log("the results[i] is: " + results[i]);
+        /*Uncaught TypeError: Cannot read property 'url' of undefined       
+        var src = results[i].get("image").url();
+                if ( src === undefined) {
+                    src = "../images/balloon.jpg";
+                }
+        */         
         var s = "<div class='swiper-slide trip_li' id="+results[i].id+">";
-        s+= "<div class='timeline-image'><img src='../images/balloon.jpg' alt='Picture'></div>";
+        s+= "<div class='timeline-image'><img src='images/balloon.jpg' alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
         s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></div></div>";
                 
@@ -373,21 +379,17 @@ $(function(){
     var step=Math.PI/4;
     var offset= -3 * Math.PI/8;
     
-    $(".btn_selectbig").hover(function(){
+    $(".btn_selectbig").click(function(){
         $(".btn_select").each(function(i){
             var x=(Math.sin(step*i+offset)*90)+70;
             var y=(Math.cos(step*i+offset)*90)+30;
             $(this).animate({left:x+"px",bottom:y+"px"},200);
     	});
-        $("#overlay").css('display','block');
+        $(this).toggleClass("btn_selectbig_selected");
+        $("#overlay").toggle('display');
     });
     
     $(".btn_select").click(function(){
-        $(".btn_select").animate({left:"70px",bottom:"30px"},200);
-        $("#overlay").css('display','none');
-    });
-    
-    $(".btn_selectbig").click(function(){
         $(".btn_select").animate({left:"70px",bottom:"30px"},200);
         $("#overlay").css('display','none');
     });
@@ -460,12 +462,14 @@ function activateSwiper() {
     })        
 };
 
-$(".tile").on("click",function() {
+//expands tile entry when clicked, becoming full screen
+$("body").on("click", ".tile",function() {
     console.log("tile clicked");
-    $(this).toggleClass('tile_clicked');
+    $(this).toggleClass("slow",'tile_clicked');
     $(".tile_bar").toggle("display");
 });
 
+//hides add button when user is scrolling
 $(document).scroll(function(){  
     $('#box').fadeOut();
 
@@ -475,5 +479,20 @@ $(document).scroll(function(){
         if(scrollA == $('body').scrollTop()){
             $('#box').fadeIn();
         }
-    }, 200);
+    }, 400);
 })
+
+//animate forms
+
+$( ".input" ).focusin(function() {
+  $( this ).find( "span" ).animate({"opacity":"0"}, 200);
+});
+
+$( ".input" ).focusout(function() {
+  $( this ).find( "span" ).animate({"opacity":"1"}, 300);
+});
+
+$("#trip").submit(function(){
+  $("input").css({"border-color":"#2ecc71"});
+  return false;
+});

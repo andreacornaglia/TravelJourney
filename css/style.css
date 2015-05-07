@@ -2,6 +2,10 @@ body{
     zoom:1;
 }
 
+i{
+  color:white;
+}
+
 html, body{
     width:100%;
     height: 100%;
@@ -15,6 +19,7 @@ html, body{
   width: 100%;
   background: #80a5bf;
   padding: 10px;
+  margin-bottom: -3px;
   color: white;
   display: inline-block;
   box-sizing: border-box;
@@ -170,10 +175,20 @@ html, body{
 
 #entry_container{
     display: inline-block;
+    padding-top: 1px;
 }
 
 #trip_container{
     height: 100%;
+}
+
+#newtrip{
+    margin-bottom: 20px;
+}
+
+#trip{
+    padding-left: 10px;
+    margin-bottom: 10px;
 }
 
 #details_container{
@@ -194,9 +209,13 @@ html, body{
 	padding-left: 20px;
 }
 
-#newtrip, #newentry{
-    display: none;
+#newentry{
+    background: #f1efd3;
+    width: 90%;
+    padding: 20px;
+    height: 90%;
 }
+
 
 ul{
     padding: 0;
@@ -211,22 +230,23 @@ ul{
 .timeline-image{
   /*width: 140px;
   height: 140px;*/
+  height: 300px;
   overflow: hidden;
   margin-right: auto;
   margin-left: auto;
   background: #fff;
 }
 
-.timeline-image img{
-    /*width: 200px;*/
-}
-
-.timeline-content {
+.timeline-content{
+    margin-top:-12px;
+    background: white;
 }
 
 .entry-title, .addtrip-title{
-    font-size: 15px;
-    color: #097cb3;
+    font-size: 16px;
+    font-family: 'Roboto Slab', sans-serif;
+    color: #ee735c;
+    padding: 10px;
 }
 
 .author_n_date{
@@ -252,16 +272,15 @@ li{
 }
 
 #entry_back, #details_back, #navicon{
-    width: 30px;
     float:left;
-    margin-top: 8px;
+    color: white;
+    margin-top: 10px;
 }
 
-#trip_edit {
-  width: 25px;
+#trip_edit, #trip_filter{
   float: right;
-  margin-top: 8px;
-  margin-right: 20px;
+  color: white;
+  margin-top: 10px;
 }
 
 #header_addoredit{
@@ -272,10 +291,6 @@ li{
   display: inline-block;
   box-sizing: border-box;
   height: 200px;
-}
-
-#newtrip{
-    padding: 10px;
 }
 
 #existing_entries{
@@ -311,11 +326,12 @@ li{
   padding: 10px;
   margin: auto;
   box-sizing: border-box;
-  background: white;
+  background: #fff;
 }
 
-p#logout{
+#logout{
     float: right;
+    margin-top:10px;
 }
 
 /*my entries layout*/
@@ -332,16 +348,19 @@ p#logout{
   width: 50%;
   height: 200px;
   float: left;
-  padding: 10px;
+  padding: 1px;
   box-sizing: border-box;
 }
 
 .tile_clicked{
-   position: absolute;
-   top: 0%;
-   left: 0;
-    z-index: 2;
-   transition: all 1s;	
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  background: white;
+  left: 0;
+  z-index: 2;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 .tile_bar{
@@ -358,7 +377,7 @@ p#logout{
 }
 
 .dummy h1{
-      position: relative;
+  position: relative;
   top: 50%;
   text-align: center;
   margin: auto;
@@ -371,6 +390,7 @@ p#logout{
   padding-bottom: 10px;
   border-top: 3px solid white;
   border-bottom: 3px solid white;
+  font-weight:100;
 }
 
 #overlay{
@@ -382,3 +402,95 @@ p#logout{
     height: 100%;
     display: none;
 }
+
+.btn_selectbig i{
+    margin-top: 23px;
+}
+
+.btn_selectbig_selected{
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 2000ms;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 2000ms;
+    -ms-animation-name: spin;
+    -ms-animation-duration: 2000ms;
+     animation-name: spin;
+    animation-duration: 2000ms;
+}
+
+@-ms-keyframes spin {
+    from { -ms-transform: rotate(0deg); }
+    to { -ms-transform: rotate(45deg); }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(45deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(45deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(45deg);
+    }
+}
+
+
+.input, .input_half{
+  position: relative;
+  width: 90%;
+}
+
+.input i{
+  color:#ccc;
+}
+
+.input span{
+    position: absolute;
+    display: block;
+    color: #EDEDED;
+    left: 10px;
+    top: 8px;
+}
+
+.input_half span{
+    position: absolute;
+    display: block;
+    color: #EDEDED;
+    left: 10px;
+    top: 8px;
+}
+
+.input_half{
+    display: inline-block;
+}
+.input_half input{
+    width: 35%;
+    float:left;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: #EDEDED;
+}
+
+.input input{
+    width: 90%;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: #EDEDED;
+}
+.input input:focus{
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #FF7052;
+}
+

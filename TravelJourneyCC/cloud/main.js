@@ -33,8 +33,8 @@ Parse.Cloud.beforeSave("Entry", function(request, response) {
 		
 	}).then(function(image){
 		return image.scale({
-			width: 64,
-			height: 64
+			width: 640,
+			height: 640
 		});
 		
 	}).then(function(image){
