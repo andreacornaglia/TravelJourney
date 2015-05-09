@@ -376,23 +376,37 @@ $(function(){
     
 
 //////////ANIMATE THE COMPOSE BUTTON
-    var step=Math.PI/4;
-    var offset= -3 * Math.PI/8;
+    var step=Math.PI/5;
+    var offset= -Math.PI/2;
     
-    $(".btn_selectbig").click(function(){
+    $("#trip_area .btn_selectbig").click(function(){
+        $(this).css('display','none');
+        $(".overlay").animate({top:"0px"},500);
+        $(".overlay").css('display','block');
+    });
+    
+    $("#trip_area .btn_select").click(function(){
+        $(".overlay").css('display','none');
+    });
+    
+    $("#entry_area .btn_selectbig i").click(function(){
         $(".btn_select").each(function(i){
-            var x=(Math.sin(step*i+offset)*90)+70;
-            var y=(Math.cos(step*i+offset)*90)+30;
-            $(this).animate({left:x+"px",bottom:y+"px"},200);
+            var x=(Math.sin(step*i+offset)*130)+100;
+            var y=(Math.cos(step*i+offset)*130)+30;
+            $(this).animate({left:x+"px",bottom:y+"px", opacity:1},200);
     	});
-        $(this).toggleClass("btn_selectbig_selected");
-        $("#overlay").toggle('display');
+        $("#entry_area .btn_selectbig").toggleClass("btn_selectbig_selected btn_selectbig_extra");
+        $(".overlay").toggle('display');
     });
     
-    $(".btn_select").click(function(){
-        $(".btn_select").animate({left:"70px",bottom:"30px"},200);
-        $("#overlay").css('display','none');
+    $("#entry_area .btn_select").click(function(){
+        $("#newentry").css('display','block');
+        $(".btn_select").animate({left:"100px",bottom:"30px", opacity:0},200);
+        $("#entry_area .btn_selectbig").removeClass("btn_selectbig_selected btn_selectbig_extra");
     });
+    
+    
+    
     
 });
 
@@ -471,13 +485,13 @@ $("body").on("click", ".tile",function() {
 
 //hides add button when user is scrolling
 $(document).scroll(function(){  
-    $('#box').fadeOut();
+    $('.box').fadeOut();
 
     var scrollA = $('body').scrollTop();
 
     setTimeout(function(){
         if(scrollA == $('body').scrollTop()){
-            $('#box').fadeIn();
+            $('.box').fadeIn();
         }
     }, 400);
 })
@@ -496,3 +510,16 @@ $("#trip").submit(function(){
   $("input").css({"border-color":"#2ecc71"});
   return false;
 });
+
+function addPhoto(){
+    $("#newentry").css('display','block');
+}
+function addText(){
+    $("#newentry").css('display','block');
+}
+function addLocation(){
+    $("#newentry").css('display','block');
+}
+function addTags(){
+    $("#newentry").css('display','block');
+}

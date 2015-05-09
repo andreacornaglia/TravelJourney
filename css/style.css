@@ -16,9 +16,10 @@ html, body{
 }
 
 .header{
+  font-size: 20px;
   width: 100%;
-  background: #80a5bf;
-  padding: 10px;
+  background: #6a85a2;
+  padding: 20px 10px;
   margin-bottom: -3px;
   color: white;
   display: inline-block;
@@ -26,10 +27,12 @@ html, body{
 }
 
 .header h1, #header_addoredit h1{
-    margin-left: 50px;
-    font-weight: 100;
+    margin: 0 0 0 50px;
+    font-weight: normal;
     font-size: 20px;
     float:left;
+    padding: 0;
+    line-height: .7;
 }
 
 #footer{
@@ -56,25 +59,26 @@ html, body{
 }
 
 .btn_select{
+    opacity: 0;
     cursor: pointer;
     position: absolute;
-    left:70px;
+    left:30px;
     bottom:30px;
     width:50px;
     height: 50px;
-    border-radius: 40px;
-    background: #f1efd3;
     text-align: center;
     overflow: hidden;
+    z-index: 20;
 }
 
-#box{
+.box{
     width:200px;
-    height: 160px;
+    height: 200px;
     margin-right: auto;
     margin-left: auto;
     position: fixed;
     bottom: 0;
+    z-index: 10;
     right: 0;
     margin-bottom: -20px;
 }
@@ -82,7 +86,7 @@ html, body{
 .btn_selectbig{
     cursor: pointer;
     position: absolute;
-    left:70px;
+    right: 30px;
     bottom:30px;
     width:60px;
     height: 60px;
@@ -209,13 +213,18 @@ html, body{
 	padding-left: 20px;
 }
 
-#newentry{
-    background: #f1efd3;
-    width: 90%;
-    padding: 20px;
-    height: 90%;
+#newentry, #newtrip{
+  background: #fff;
+  width: 100%;
+  margin-left: 0px;
+  margin-top: 0px;
+  height: 600px;
+  z-index: 30;
 }
 
+#newentry{
+    display: none;
+}
 
 ul{
     padding: 0;
@@ -274,13 +283,11 @@ li{
 #entry_back, #details_back, #navicon{
     float:left;
     color: white;
-    margin-top: 10px;
 }
 
 #trip_edit, #trip_filter{
   float: right;
   color: white;
-  margin-top: 10px;
 }
 
 #header_addoredit{
@@ -331,7 +338,6 @@ li{
 
 #logout{
     float: right;
-    margin-top:10px;
 }
 
 /*my entries layout*/
@@ -393,9 +399,10 @@ li{
   font-weight:100;
 }
 
-#overlay{
+.overlay{
     position: absolute;
-    top:0;
+    z-index: 10;
+    top:800px;
     left: 0;
     background: rgba(0,0,0,.3);
     width: 100%;
@@ -404,18 +411,31 @@ li{
 }
 
 .btn_selectbig i{
-    margin-top: 23px;
+    margin-top: 50%;
 }
 
-.btn_selectbig_selected{
+
+.btn_selectbig_extra{
+    height: 400px;
+    width: 400px;
+    right: -150px;
+    bottom: -150px;
+    border-radius: 200px;
+}
+
+.btn_selectbig_selected i{
     -webkit-animation-name: spin;
     -webkit-animation-duration: 2000ms;
+    -webkit-animation-fill-mode: forwards;
     -moz-animation-name: spin;
     -moz-animation-duration: 2000ms;
+    -moz-animation-fill-mode: forwards;
     -ms-animation-name: spin;
     -ms-animation-duration: 2000ms;
+    -ms-animation-fill-mode: forwards;
      animation-name: spin;
     animation-duration: 2000ms;
+    animation-fill-mode: forwards;
 }
 
 @-ms-keyframes spin {
@@ -493,4 +513,12 @@ li{
     outline: 0;
     border-color: #FF7052;
 }
+
+#newheader{
+    width: 100%;
+    background: #eee;
+    display: inline-block;
+}
+
+
 

@@ -38,80 +38,72 @@
     </div>
 	<div id="trip_area">
         <div class="header">
-            <i class="fa fa-2x fa-navicon" id="navicon"></i>
+            <i class="fa  fa-navicon" id="navicon"></i>
             <h1>My Trip History</h1>
-            <i id="logout" class="fa fa-2x fa-close"></i>
+            <i id="logout" class="fa  fa-close"></i>
         </div>
         <div id="trips_slider">
             <div id="trip_container" class="swiper-container">
                 <div id="existing_trips" class="swiper-wrapper">
-                    <div class="swiper-slide">
-                      <div class="timeline-image">
-                            <img src="images/balloon.jpg" alt="Picture">
-                        </div>
-                        <div class="timeline-content">
-                            <div id="newtrip">
-                                <h2 id="h2_add_new_trip" class="addtrip-title">Add New Trip</h2>
-                                <form id="trip">
-                                    <p><input type="file" id="trip-image"></p>
-                                    <div class="input">
-    	                               <input id="trip-name" type="text" placeholder="Name" required />
-                                       <span><i class="fa fa-envelope-o"></i></span>
-                                    </div>
-                                    <div class="input">
-    	                               <input id="trip-description" type="text" placeholder="Description" required />
-                                       <span><i class="fa fa-envelope-o"></i></span>
-                                    </div>
-                                    <p>dates</p>
-                                   <div class="input_half">
-    	                               <input id="trip-date-start" type="date" placeholder="Name" required />
-                                       <span><i class="fa fa-envelope-o"></i></span>
-                                       
-    	                               <input id="trip-date-finish" type="date" placeholder="Name" required />
-                                       <span><i class="fa fa-envelope-o"></i></span>
-                                    </div>
-                                    <div class="input">
-    	                               <input id="trip-collaborator" type="text" placeholder="Collaborators" required />
-                                       <span><i class="fa fa-envelope-o"></i></span>
-                                    </div>
-                                    <p><input type="submit"></p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="overlay">
+            <div id="newtrip">
+                <div class="newheader">
+                    <h2 class="entry-title">Add New Entry</h2>
+                    <i class="closeheader" class="fa fa-close"></i>
+                </div>
+                <div class="timeline-image">
+                    <img src="images/balloon.jpg" alt="Picture">
+                </div>
+                <form id="trip">
+                    <p><input type="file" id="trip-image"></p>
+                    <div class="input">
+    	               <input id="trip-name" type="text" placeholder="Name" required />
+                        <span><i class="fa fa-envelope-o"></i></span>
+                    </div>
+                    <div class="input">
+    	               <input id="trip-description" type="text" placeholder="Description" required />
+                       <span><i class="fa fa-envelope-o"></i></span>
+                    </div>
+                    <p>dates</p>
+                    <div class="input_half">
+    	               <input id="trip-date-start" type="date" placeholder="Name" required />
+                        <span><i class="fa fa-envelope-o"></i></span>
+                       <input id="trip-date-finish" type="date" placeholder="Name" required />
+                        <span><i class="fa fa-envelope-o"></i></span>
+                    </div>
+                    <div class="input">
+    	               <input id="trip-collaborator" type="text" placeholder="Collaborators" required />
+                        <span><i class="fa fa-envelope-o"></i></span>
+                    </div>
+                        <p><input type="submit"></p>
+                </form>
+            </div>
+        </div>
+        <div class="box">
+            <div class="btn_selectbig" id="add_trip">
+                <i class="fa fa-lg fa-plus"></i>
             </div>
         </div>
 	</div>
 	<div id="entry_area">
         <div class="header">
-            <i id="entry_back" class="fa fa-2x fa-chevron-left"></i>
+            <i id="entry_back" class="fa  fa-chevron-left"></i>
             <h1 id="entry_trip_name">Trip's Entries</h1>
-            <i id="trip_edit" class="fa fa-2x fa-pencil"></i>
-            <i id="trip_filter" class="fa fa-2x fa-filter"></i>
+            <i id="trip_edit" class="fa  fa-pencil"></i>
+            <i id="trip_filter" class="fa  fa-filter"></i>
         </div>
 		<div id="entry_container">
             <div id="existing_entries">
                 <div class="tile_padding">
                     <div class="tile dummy">
                         <h1>day 1</h1>
-                        <!--<div class="timeline-content">
-                            <h2 class="entry-title">Add New Entry</h2>
-                            <div id="newentry">
-                                <form id="entry">
-                                  <p>Add a Comment<br><input id="entry-text" type="text"></p>
-                                  <p><input type="file" id="entry-image"></p>
-                                  <p>Place<br><input id="entry-place" type="text"></p>
-                                  <p>Tag<br><input id="entry-tag" type="text"></p>
-                                  <p>Geolocation<br><input id="entry-geo" type="text">
-                                  <p><input type="submit"></p>
-                                </form>
-                            </div>
-                        </div>-->
                     </div>
                 </div>
             </div>
-            <div id="overlay">
+            <div class="overlay">
                     <div id="newentry">
                         <h2 class="entry-title">Add New Entry</h2>
                         <form id="entry">
@@ -125,7 +117,7 @@
                     </div>
             </div>
 		</div>
-        <div id="box">
+        <div class="box">
             <div class="btn_select" id="add_photos" onClick="addPhoto()">
                 <input id="inputFile" type="file">
                 <i class="fa fa-lg fa-photo"></i>
@@ -133,10 +125,10 @@
             <div class="btn_select" id="add_text" onClick="addText()">
                 <i class="fa fa-lg fa-header"></i>
             </div>
-            <div class="btn_select" id="add_icons">
+            <div class="btn_select" id="add_icons" onClick="addTags()">
                 <i class="fa fa-lg fa-tag"></i>
             </div>
-            <div class="btn_select" id="add_location" onclick="getLocation()">
+            <div class="btn_select" id="add_location" onclick="addLocation()">
                 <i class="fa fa-lg fa-map-marker"></i>
             </div>
             <div class="btn_selectbig" id="add_media">
@@ -146,7 +138,7 @@
 	</div>
     <div id="details_area">
           <div class="header">
-            <i id="details_back" class="fa fa-2x fa-chevron-left"></i>
+            <i id="details_back" class="fa  fa-chevron-left"></i>
             <h1 id="entry_entry_name">Entry's Name</h1>
         </div>
           <div id="details_container">
@@ -155,7 +147,7 @@
     </div>
     <div id="addoredit_trip_area">
         <div id="header_addoredit">
-            <i id="details_back" class="fa fa-2x fa-chevron-left"></i>
+            <i id="details_back" class="fa fa-chevron-left"></i>
             <h1 id="edit_trip_name"></h1>
         </div>
         <div id="newtrip">
