@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Travel Journey</title>
     <!-- CSS -->
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="swiper.min.css"/>
+    <link rel="stylesheet" href="css/swiper.min.css"/>
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:100,200|Roboto:400,300,500' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -52,7 +55,7 @@
             <div id="newtrip">
                 <div class="newheader">
                     <h2 class="entry-title">Add New Entry</h2>
-                    <i class="closeheader" class="fa fa-close"></i>
+                    <i class="fa fa-close closeheader"></i>
                 </div>
                 <div class="timeline-image">
                     <img src="images/balloon.jpg" alt="Picture">
@@ -61,24 +64,28 @@
                     <p><input type="file" id="trip-image"></p>
                     <div class="input">
     	               <input id="trip-name" type="text" placeholder="Name" required />
-                        <span><i class="fa fa-envelope-o"></i></span>
+                        <span><i class="fa fa-user"></i></span>
                     </div>
                     <div class="input">
     	               <input id="trip-description" type="text" placeholder="Description" required />
-                       <span><i class="fa fa-envelope-o"></i></span>
+                       <span><i class="fa fa-file-text-o"></i></span>
                     </div>
-                    <p>dates</p>
                     <div class="input_half">
+                        <div class="input_quarter left">
     	               <input id="trip-date-start" type="date" placeholder="Name" required />
-                        <span><i class="fa fa-envelope-o"></i></span>
+                        <span><i class="fa fa-calendar-o"></i></span>
+                        </div>
+                        <span class="date_separator">/</span>
+                        <div class="input_quarter right">
                        <input id="trip-date-finish" type="date" placeholder="Name" required />
-                        <span><i class="fa fa-envelope-o"></i></span>
+                        <span><i class="fa fa-calendar-o"></i></span>
+                        </div>
                     </div>
                     <div class="input">
     	               <input id="trip-collaborator" type="text" placeholder="Collaborators" required />
                         <span><i class="fa fa-envelope-o"></i></span>
                     </div>
-                        <p><input type="submit"></p>
+                        <p><input class="submit_btn" type="submit"></p>
                 </form>
             </div>
         </div>
@@ -95,6 +102,17 @@
             <i id="trip_edit" class="fa  fa-pencil"></i>
             <i id="trip_filter" class="fa  fa-filter"></i>
         </div>
+        <div id="filters">
+                <div id="people">
+                    people
+                </div>
+                <div id="places">
+                    places
+                </div>
+                <div id="days">
+                    days
+                </div>
+        </div>
 		<div id="entry_container">
             <div id="existing_entries">
                 <div class="tile_padding">
@@ -105,14 +123,32 @@
             </div>
             <div class="overlay">
                     <div id="newentry">
-                        <h2 class="entry-title">Add New Entry</h2>
+                        <div class="newheader">
+                            <h2 class="entry-title">Add New Post</h2>
+                            <i class="fa fa-close closeheader"></i>
+                        </div>
+                        <div class="timeline-image">
+                            <img src="images/balloon.jpg" alt="Picture">
+                        </div>
                         <form id="entry">
-                            <p>Add a Comment<br><input id="entry-text" type="text"></p>
                             <p><input type="file" id="entry-image"></p>
-                            <p>Place<br><input id="entry-place" type="text"></p>
-                            <p>Tag<br><input id="entry-tag" type="text"></p>
-                            <p>Geolocation<br><input id="entry-geo" type="text">
-                            <p><input type="submit"></p>
+                            <div class="input">
+                               <input id="entry-text" type="text" placeholder="Add a comment" required />
+                                <span><i class="fa fa-user"></i></span>
+                            </div>
+                            <div class="input">
+                               <input id="entry-place" type="text" placeholder="Trip place" required />
+                                <span><i class="fa fa-home"></i></span>
+                            </div>
+                            <div class="input">
+                               <input id="entry-tag" type="text" placeholder="Trip tags" required />
+                                <span><i class="fa fa-tag"></i></span>
+                            </div>
+                            <div class="input">
+                               <input id="entry-geo" type="text" placeholder="Geoloc" required />
+                                <span><i class="fa fa-map-marker"></i></span>
+                            </div>
+                            <p><input class="submit_btn" type="submit"></p>
                         </form>
                     </div>
             </div>

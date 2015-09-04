@@ -11,28 +11,28 @@ html, body{
     height: 100%;
     margin:0;
     padding:0;
-    font-family: 'Roboto', 'Helvetica', sans-serif;
-    background: #f1efd3;
+    font-family: 'Noto Sans', 'Helvetica', sans-serif;
+    background: #fff;
 }
 
 .header{
   font-size: 20px;
   width: 100%;
   background: #6a85a2;
-  padding: 20px 10px;
-  margin-bottom: -3px;
+  padding: 30px 15px;
+  margin-bottom: -5px;
   color: white;
   display: inline-block;
   box-sizing: border-box;
 }
 
 .header h1, #header_addoredit h1{
-    margin: 0 0 0 50px;
+    margin: 0 0 0 30px;
     font-weight: normal;
-    font-size: 20px;
+    font-size: 18px;
     float:left;
     padding: 0;
-    line-height: .7;
+    line-height: .9;
 }
 
 #footer{
@@ -150,15 +150,20 @@ html, body{
 #login_area, #trip_area, #entry_area, #details_area, #compose_area{
 	left:0;
 	width:100%;
+    min-height: 100%;
     position: relative;
-    background: #f1efd3;
+    background: #fff;
 }
 
 #entry_area, #details_area{
-    background: #f1efd3;
+    background: #fff;
 }
 
-#entry_area, #details_area, #addoredit_trip_area{
+input{
+    -webkit-appearance: none;
+}
+
+#entry_area, #details_area, #addoredit_trip_area, #trip_area{
     display: none;
 }
 
@@ -168,13 +173,14 @@ html, body{
 }
 
 #login_area{ z-index:10;}
-#trip_area{ z-index:9; height: 100%;}
+#trip_area{ z-index:9;   overflow: hidden;}
 #entry_area{z-index:8;}
 #compose_area{z-index:5;}
 #details_area{z-index:1;}
 
 #login_container, #trip_container, #entry_container{
 	width: 100%;
+    box-sizing: border-box;
 }
 
 #entry_container{
@@ -183,16 +189,18 @@ html, body{
 }
 
 #trip_container{
-    height: 100%;
 }
 
 #newtrip{
     margin-bottom: 20px;
 }
 
-#trip{
-    padding-left: 10px;
-    margin-bottom: 10px;
+#trip, #entry{
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #details_container{
@@ -216,14 +224,19 @@ html, body{
 #newentry, #newtrip{
   background: #fff;
   width: 100%;
+  min-height: 100%;
   margin-left: 0px;
   margin-top: 0px;
-  height: 600px;
   z-index: 30;
+}
+
+#newtrip{
+    height: 800px;
 }
 
 #newentry{
     display: none;
+    top:800px;
 }
 
 ul{
@@ -237,25 +250,35 @@ ul{
 }
 
 .timeline-image{
-  /*width: 140px;
-  height: 140px;*/
   height: 300px;
   overflow: hidden;
   margin-right: auto;
   margin-left: auto;
   background: #fff;
+  margin-bottom: 10px;
 }
 
 .timeline-content{
-    margin-top:-12px;
     background: white;
+    color:black;
+}
+
+.timeline-content i{
+    margin-right: 10px;
+    color:black;
 }
 
 .entry-title, .addtrip-title{
-    font-size: 16px;
-    font-family: 'Roboto Slab', sans-serif;
-    color: #ee735c;
-    padding: 10px;
+  font-size: 17px;
+  font-family: 'Noto Sans', sans-serif;
+  color: #ee735c;
+  margin: 0;
+}
+.addtrip-title{
+    float: left;
+}
+.entry-title{
+    font-size: 21px;
 }
 
 .author_n_date{
@@ -288,6 +311,10 @@ li{
 #trip_edit, #trip_filter{
   float: right;
   color: white;
+}
+
+#trip_filter{
+      margin-right: 20PX;
 }
 
 #header_addoredit{
@@ -411,7 +438,7 @@ li{
 }
 
 .btn_selectbig i{
-    margin-top: 50%;
+    margin-top: 40%;
 }
 
 
@@ -459,10 +486,14 @@ li{
     }
 }
 
+#trip-date-finish{
+    float: right;
+}
 
 .input, .input_half{
   position: relative;
-  width: 90%;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .input i{
@@ -472,15 +503,15 @@ li{
 .input span{
     position: absolute;
     display: block;
-    color: #EDEDED;
+    color: #ccc;
     left: 10px;
     top: 8px;
 }
 
-.input_half span{
+.input_quarter span{
     position: absolute;
     display: block;
-    color: #EDEDED;
+    color: #ddd;
     left: 10px;
     top: 8px;
 }
@@ -488,37 +519,109 @@ li{
 .input_half{
     display: inline-block;
 }
-.input_half input{
-    width: 35%;
-    float:left;
-    padding: 10px 5px 10px 40px;
-    display: block;
-    border: 1px solid #EDEDED;
-    border-radius: 4px;
-    transition: 0.2s ease-out;
-    color: #EDEDED;
+
+span i{
+    color: #ccc;
 }
 
-.input input{
-    width: 90%;
-    padding: 10px 5px 10px 40px;
-    display: block;
-    border: 1px solid #EDEDED;
-    border-radius: 4px;
-    transition: 0.2s ease-out;
-    color: #EDEDED;
+.right{
+    float: right;
 }
+
+.left{
+    float: left;
+}
+
+.input_half .input_quarter{
+  width: 48%;
+  display: block;
+  border-radius: 4px;
+    position: relative;
+}
+
+.date_separator{
+  padding-left: 4px;
+  line-height: 2.2;
+}
+
+.input input, .input_quarter input{
+  width: 100%;
+  padding: 10px 5px 10px 40px;
+  box-sizing: border-box;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: 0.2s ease-out;
+  color: #888;
+}
+
+input::-webkit-input-placeholder {
+   color: #ccc;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+   color: #ccc;  
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+   color: #ccc; 
+}
+
+input:-ms-input-placeholder {  
+   color: #ccc; 
+}
+
 .input input:focus{
-    padding: 10px 5px 10px 10px;
+    padding: 10px 5px 10px 40px;
     outline: 0;
     border-color: #FF7052;
 }
 
-#newheader{
-    width: 100%;
-    background: #eee;
-    display: inline-block;
+.newheader{
+  width: 100%;
+  background: #fff;
+  color: #ee735c;
+  display: inline-block;
+  padding: 10px 20px;
+  box-sizing: border-box;
 }
 
+.submit_btn{
+  width: 100%;
+  background: #ee735c;
+  border: none;
+  border-radius: 4px;
+  padding: 15px 0;
+  color: white;
+  text-transform: uppercase;
+}
 
+.closeheader{
+  color: #ee735c;
+  float: right;
+}
 
+.timeline-image img{
+    height: 100%;
+}
+
+#filters{
+    padding: 10px 0;
+    display: none;
+    width:100%;
+    text-align: center;
+    text-transform: uppercase;
+    color:white;
+    background: #6a85a2;
+    font-size: 14px;
+}
+
+#filters div{
+    width: 33%;
+    float: left;
+    margin-bottom: 10px;
+}
+
+#places, #people{
+    border-right: 1px solid #fff;
+}

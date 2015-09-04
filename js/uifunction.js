@@ -12,6 +12,10 @@ var currentTrip = "no trip selected";
 var currentEntry = "no entry selected";
 var currentUser = "no user selected";
 
+
+
+
+
 /////////SHOW EXISTING TRIPS
 function getTrip() {
 	var query = new Parse.Query(Trip);
@@ -30,7 +34,11 @@ function getTrip() {
         var s = "<div class='swiper-slide trip_li' id="+results[i].id+">";
         s+= "<div class='timeline-image'><img src='images/balloon.jpg' alt='Picture'></div>";
         s+= "<div class='timeline-content'>";
-        s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2></div></div></div>";
+        s+="<h2 class='entry-title'>"+results[i].get("name")+"</h2>";
+        s+="<p class='entry-description'>"+results[i].get("description")+"</p>";
+        s+="<p class='entry-dates'><i class='fa fa-calendar'></i>"+moment(results[i].createdAt).format('L')+" to "+moment(results[i].updatedAt).format('L')+"</p>";
+        s+="<p class='entry-contributor'><i class='fa fa-user'></i>"+results[i].get("contributor")+"</p>";
+        s+="</div></div></div>";
                 
 				$("#existing_trips").append(s);
                 activateSwiper();
@@ -129,7 +137,8 @@ $(function(){
 		console.log("Trip li in existing trip clicked");
 		$("#trip_area").css("display","none");
 		$("#entry_area").css("display","block");
-        var name = $(this).text();
+        var name = $(this).find(".entry-title").text();
+        
         console.log("name is" + name);
 		$("#entry_trip_name").text(name);
         //is this correct??
@@ -217,6 +226,8 @@ $(function(){
 		Parse.User.logIn(username, password, {
 			success: function(user){
 				console.log("Login Success:"+user.username); //is not getting the user.username
+                $("#login_area").css("display","none");
+		        $("#trip_area").css("display","block");
 			},
 			error: function(user, error) {
 				console.log("login error:"+error.message);
@@ -370,6 +381,7 @@ $(function(){
         // user logged in 
         // show add entry screen
         $("#login_area").hide();
+        $("#trip_area").css('display','block');
     } else {
         // show log in screen
     }
@@ -380,7 +392,7 @@ $(function(){
     var offset= -Math.PI/2;
     
     $("#trip_area .btn_selectbig").click(function(){
-        $(this).css('display','none');
+        $("#trip_area .box").css('display','none');
         $(".overlay").animate({top:"0px"},500);
         $(".overlay").css('display','block');
     });
@@ -389,24 +401,47 @@ $(function(){
         $(".overlay").css('display','none');
     });
     
+    btn_selectbig_selected = 0;
+    
     $("#entry_area .btn_selectbig i").click(function(){
+        if(btn_selectbig_selected==0){
         $(".btn_select").each(function(i){
             var x=(Math.sin(step*i+offset)*130)+100;
             var y=(Math.cos(step*i+offset)*130)+30;
             $(this).animate({left:x+"px",bottom:y+"px", opacity:1},200);
     	});
-        $("#entry_area .btn_selectbig").toggleClass("btn_selectbig_selected btn_selectbig_extra");
-        $(".overlay").toggle('display');
+        $("#entry_area .btn_selectbig").addClass("btn_selectbig_selected btn_selectbig_extra");
+        $(".overlay").animate({top:"0px"},500);
+        $(".overlay").css('display','block');
+        btn_selectbig_selected = 1;
+        }
+        else{
+          $(".btn_select").animate({left:"30px",bottom:"30px", opacity:0},200);
+          $("#entry_area .btn_selectbig").removeClass("btn_selectbig_selected btn_selectbig_extra");
+          $(".overlay").css('display','none');
+          $(".overlay").animate({top:"800px"},500);
+          btn_selectbig_selected = 0;
+        }
     });
+    
     
     $("#entry_area .btn_select").click(function(){
+        $(".box").css('display','none');
         $("#newentry").css('display','block');
-        $(".btn_select").animate({left:"100px",bottom:"30px", opacity:0},200);
-        $("#entry_area .btn_selectbig").removeClass("btn_selectbig_selected btn_selectbig_extra");
+        $("#newentry").animate({top:"0px"},500);
     });
     
+    $("#trip_area .closeheader").click(function(){
+        $(".overlay").css('display','none');
+        $("#trip_area .box").css('display','block');
+    })
     
-    
+    $("#entry_area .closeheader").click(function(){
+        $(".overlay").css('display','none');
+        $("#entry_area .box").css('display','block');
+        $("#entry_area .btn_selectbig").removeClass("btn_selectbig_selected btn_selectbig_extra");
+        $(".btn_select").animate({left:"30px",bottom:"30px", opacity:0},200);
+    })
     
 });
 
@@ -464,6 +499,9 @@ $("#h2_add_new_trip").on("click", function(){
 ////LOGOUT
 $("#logout").on("click", function(){
     Parse.User.logOut();
+    $("#trip_area").css("display","none");
+    $("#entry_area").css("display","none");
+    $("#login_area").css("display","block");
 })
 
 ///slider code
@@ -479,9 +517,22 @@ function activateSwiper() {
 //expands tile entry when clicked, becoming full screen
 $("body").on("click", ".tile",function() {
     console.log("tile clicked");
-    $(this).toggleClass("slow",'tile_clicked');
+    $(this).toggleClass('tile_clicked');
     $(".tile_bar").toggle("display");
 });
+
+var filteron = 0;
+
+$("#trip_filter").on("click", function(){
+    if(filteron == 0){
+        $("#filters").css('display','inline-block');
+        filteron = 1;
+    } else {
+        $("#filters").css('display','none');
+        filteron = 0;
+    }
+})
+
 
 //hides add button when user is scrolling
 $(document).scroll(function(){  
@@ -497,14 +548,6 @@ $(document).scroll(function(){
 })
 
 //animate forms
-
-$( ".input" ).focusin(function() {
-  $( this ).find( "span" ).animate({"opacity":"0"}, 200);
-});
-
-$( ".input" ).focusout(function() {
-  $( this ).find( "span" ).animate({"opacity":"1"}, 300);
-});
 
 $("#trip").submit(function(){
   $("input").css({"border-color":"#2ecc71"});
